@@ -321,6 +321,55 @@ table.t{width:100%;border-collapse:collapse;font-size:15px;min-width:420px}
 .lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;background:#fff}
 .lb-close{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));inset-inline-start:calc(12px + env(safe-area-inset-left,0px));
   font:inherit;font-size:14px;background:#fff;color:#2B2224;border:0;border-radius:999px;padding:7px 18px;cursor:pointer}
+
+/* ===== laptop layout: fixed side index + one section at a time ===== */
+body{font-size:17px}
+.prose{font-size:18px}
+.layout{display:grid;grid-template-columns:290px minmax(0,1fr);align-items:start}
+.side{position:sticky;top:calc(56px + env(safe-area-inset-top,0px));height:calc(100vh - 56px - env(safe-area-inset-top,0px));overflow:auto;
+  background:var(--sheet);border-inline-end:1px solid var(--line);padding:18px 14px 24px;display:flex;flex-direction:column;gap:2px}
+.side .s-h{font-size:13px;color:var(--muted);padding:10px 12px 4px;letter-spacing:.02em}
+.side a{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-size:17px;padding:10px 12px;border-radius:10px;line-height:1.4}
+.side a:hover{background:var(--paper)}
+.side a .sn{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;border:1.5px solid var(--line);font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.side a .sc{margin-inline-start:auto;font-size:12px;color:var(--teal);background:var(--teal-soft);border-radius:999px;padding:1px 9px;white-space:nowrap}
+.side a .sc.soon{color:var(--muted);background:var(--paper)}
+.side a[aria-current="page"]{background:var(--teal);color:var(--sheet)}
+.side a[aria-current="page"] .sn{border-color:var(--sheet);color:var(--sheet)}
+.side a[aria-current="page"] .sc{background:rgba(255,255,255,.18);color:var(--sheet)}
+.book{padding-block:28px 40px;padding-inline:max(28px,env(safe-area-inset-right,0px)) max(28px,env(safe-area-inset-left,0px));display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:stretch;min-height:calc(100vh - 56px)}
+.book.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sheet{max-width:none;padding:clamp(26px,3.2vw,48px) clamp(22px,3.4vw,56px)}
+.sheet.cover{min-height:calc(100vh - 56px - 68px - 120px)}
+.folio,#contents .toc+.folio{display:none}
+#competencies{display:none!important}
+.pager{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pager a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:14px 22px;min-width:240px;box-shadow:var(--shadow)}
+.pager a:hover{border-color:var(--teal)}
+.pager a small{font-size:13px;color:var(--muted)}
+.pager a b{font-size:18px;font-weight:700;color:var(--teal)}
+.pager a.next{margin-inline-start:auto;text-align:left}
+/* wide content grids */
+.reports{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:22px;align-items:start}
+.rep{container-type:inline-size}
+@container (max-width:620px){.rep-body{grid-template-columns:1fr}}
+.forms{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:22px;align-items:start}
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:10px;align-items:start}
+.certs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:26px;align-items:start}
+.docs{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.vm{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.subhead{font-size:15px}
+.chart{max-width:1000px}
+@media (min-width:1500px){.book{padding-inline:48px}}
+@media (max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .side{display:none}
+  .book,.book.two{grid-template-columns:minmax(0,1fr);padding-inline:max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-left,0px));min-height:0}
+  .pager a{min-width:0;flex:1}
+  .sheet.cover{min-height:min(80vh,700px)}
+}
+@media (min-width:981px){.menu-btn{display:none}}
+@media (max-width:560px){.bar-name{display:none}.bar-in{justify-content:flex-end}.bar-actions{gap:6px}.bar-actions .theme-btn,.bar-actions .menu-btn,.bar-actions .au-chip{padding:5px 10px;font-size:13px}}
 </style>
 
 </head>
@@ -333,6 +382,8 @@ table.t{width:100%;border-collapse:collapse;font-size:15px;min-width:420px}
   <nav class="menu" id="menu" hidden></nav>
 </header>
 
+<div class="layout">
+<aside class="side" id="side" aria-label="أقسام الملف"></aside>
 <main class="book" id="book">
 
   <section class="sheet cover" id="cover">
@@ -426,8 +477,12 @@ table.t{width:100%;border-collapse:collapse;font-size:15px;min-width:420px}
       <thead><tr><th>م</th><th>الجدارة</th><th>الوصف السلوكي</th><th>الوزن</th><th>المستوى المطلوب</th><th>تقارير الملف</th></tr></thead>
       <tbody id="jadTbody"></tbody>
     </table></div>
-    <h3 class="h3">تقارير المبادرات والشواهد</h3>
-    <p class="prose" style="margin-top:8px">مرتبة حسب تاريخ التنفيذ، وكل تقرير مربوط بالجدارة الأقرب له. اضغط على أي صورة لتكبيرها.</p>
+  </section>
+
+  <section class="sheet" id="evidence">
+    <div class="kicker">5 · الشواهد</div>
+    <h2 class="title">تقارير المبادرات والشواهد</h2>
+    <p class="prose" style="margin-top:14px">مرتبة حسب تاريخ التنفيذ، وكل تقرير مربوط بالجدارة الأقرب له. اضغط على أي صورة لتكبيرها.</p>
     <div class="summary" id="summary"></div>
     <div class="filters" id="filters" role="group" aria-label="تصفية التقارير"></div>
     <div class="reports" id="reports"></div>
@@ -526,7 +581,9 @@ table.t{width:100%;border-collapse:collapse;font-size:15px;min-width:420px}
     <div class="sign">تركية يحيى الزهراني</div>
   </section>
 
+<nav class="pager" id="pager" aria-label="التنقل بين الأقسام"></nav>
 </main>
+</div>
 
 <div class="reg" id="reg" hidden role="dialog" aria-modal="true" aria-labelledby="regTitle">
   <div class="reg-doc" id="regDoc" style="position:relative">
@@ -661,7 +718,7 @@ const JAD=[["المسؤولية","القدرة على تحمّل المسؤول�
  ["العمل الجماعي","القدرة على العمل بشكل جماعي وبروح الفريق الواحد، والمحافظة على علاقات جيدة داخل الوحدة التنظيمية وخارجها من أجل تحقيق الأهداف المشتركة",25],
  ["المرونة للتغيير","القدرة على التكيّف والعمل بشكل فعّال في مختلف الظروف، وفهم وجهات النظر المختلفة وقبول التغيير في متطلبات العمل",30],
  ["المبادرة","القدرة على إظهار الحرص الكافي لتحقيق أهداف العمل، والرغبة في إنجاز مهام إضافية تخدم مصلحة العمل دون أن يُطالَب بذلك، وتقديم أفكار ومقترحات جديدة نابعة من الرغبة في التحسين والتطوير",25]];
-document.getElementById("jadTbody").innerHTML=JAD.map(([n,d,w],i)=>`<tr><td class="num">${i+1}</td><td><b style="font-weight:600">${n}</b></td><td>${d}</td><td class="c">${w}%</td><td class="c">4</td><td><a href="#goals" data-jad="${n}">${REPORTS.filter(r=>r.c===n).length} تقارير</a></td></tr>`).join("");
+document.getElementById("jadTbody").innerHTML=JAD.map(([n,d,w],i)=>`<tr><td class="num">${i+1}</td><td><b style="font-weight:600">${n}</b></td><td>${d}</td><td class="c">${w}%</td><td class="c">4</td><td><a href="#evidence" data-jad="${n}">${REPORTS.filter(r=>r.c===n).length} تقارير</a></td></tr>`).join("");
 const filt=document.getElementById("filters");
 filt.innerHTML=[["الكل",REPORTS.length],...CATS.map(c=>[c,REPORTS.filter(r=>r.c===c).length])].map(([c,n],i)=>`<button class="chip" data-cat="${c}" aria-pressed="${i===0}">${c}<span>${n}</span></button>`).join("");
 filt.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;filt.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));const c=b.dataset.cat;document.querySelectorAll(".rep").forEach(a=>a.hidden=!(c==="الكل"||a.dataset.cat===c))});
@@ -723,7 +780,7 @@ menuBtn.onclick=()=>{menu.hidden=!menu.hidden;menuBtn.setAttribute("aria-expande
 menu.addEventListener("click",e=>{if(e.target.closest("a")){menu.hidden=true;menuBtn.setAttribute("aria-expanded","false")}});
 document.addEventListener("click",e=>{if(!menu.hidden&&!e.target.closest("#menu,#menuBtn")){menu.hidden=true;menuBtn.setAttribute("aria-expanded","false")}});
 
-document.addEventListener("click",e=>{const a=e.target.closest("[data-jad]");if(!a)return;e.preventDefault();const b=filt.querySelector(`[data-cat="${a.dataset.jad}"]`);b&&b.click();document.getElementById("filters").scrollIntoView({behavior:"smooth",block:"start"})});
+document.addEventListener("click",e=>{const a=e.target.closest("[data-jad]");if(!a)return;e.preventDefault();location.hash="evidence";setTimeout(()=>{const b=filt.querySelector(`[data-cat="${a.dataset.jad}"]`);b&&b.click();document.getElementById("filters").scrollIntoView({block:"start"})},30)});
 (function(){
   const G=["أول متوسط","ثاني متوسط","ثالث متوسط"];
   const max=Math.max(...STATS.map(x=>+x.t[3])), min=Math.min(...STATS.map(x=>+x.t[3]));
@@ -915,7 +972,66 @@ function syncTheme(){themeBtn.textContent=isDark()?"فاتح":"داكن"}
 themeBtn.onclick=()=>{const n=isDark()?"light":"dark";document.documentElement.setAttribute("data-theme",n);try{localStorage.setItem("tz-theme",n)}catch(e){}syncTheme()};
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",syncTheme);syncTheme();
 // page numbers on sheets
-document.querySelectorAll(".sheet").forEach((s,i)=>{if(i>0){const f=document.createElement("div");f.className="folio";f.textContent=i;s.appendChild(f)}});
+
+
+// ===== أقسام الملف: قسم واحد في كل مرة =====
+(function(){
+  const V=[
+    {t:"الغلاف",n:"",ids:["cover"]},
+    {t:"البسملة والمحتوى",n:"",ids:["basmala","contents"],two:true},
+    {t:"المقدمة والهدف",n:"1–2",ids:["intro","purpose"],two:true},
+    {t:"الرؤية والرسالة",n:"3",ids:["vision"]},
+    {t:"التكليف الإداري",n:"4",ids:["assignment"],c:"قريبًا",soon:true},
+    {t:"أهداف ميثاق الأداء",n:"5",ids:["goals"]},
+    {t:"التقارير والشواهد",n:"",ids:["evidence"],c:String(REPORTS.length)},
+    {t:"إحصائيات الغياب",n:"",ids:["stats"],c:String(STATS.length)},
+    {t:"سجل أعذار الطالبات",n:"",ids:["excuses"]},
+    {t:"الجدارات والمتابعة",n:"",ids:["competencies-docs"],c:String(FORMS.length+SCHEDS.length)},
+    {t:"الدورات التدريبية",n:"6",ids:["training"],c:"1"},
+    {t:"شهادات التطوع",n:"7",ids:["volunteer"],c:"قريبًا",soon:true},
+    {t:"شهادات الشكر",n:"8",ids:["thanks"],c:"2"},
+    {t:"الختام",n:"",ids:["values-quote","closing"],two:true},
+  ];
+  const book=document.getElementById("book"),side=document.getElementById("side"),pager=document.getElementById("pager");
+  const sheets=[...book.querySelectorAll(":scope > .sheet")];
+  const link=(v,i)=>`<a href="#${v.ids[0]}" data-v="${i}"><span class="sn">${v.n||"◆"}</span><span>${v.t}</span>${v.c?`<span class="sc${v.soon?" soon":""}">${v.c}</span>`:""}</a>`;
+  side.innerHTML=`<div class="s-h">أقسام الملف</div>`+V.map(link).join("");
+  const menuEl=document.getElementById("menu");
+  menuEl.innerHTML=V.map((v,i)=>`<a href="#${v.ids[0]}"><span>${v.n||""}</span>${v.t}</a>`).join("");
+  let cur=-1;
+  function viewOf(id){
+    if(!id)return 0;
+    const el=document.getElementById(id); if(!el)return 0;
+    const sh=el.closest(".sheet"); if(!sh)return 0;
+    const k=V.findIndex(v=>v.ids.includes(sh.id)); return k<0?0:k;
+  }
+  function show(k,targetId){
+    const v=V[k];
+    sheets.forEach(s=>{s.hidden=!v.ids.includes(s.id)});
+    book.classList.toggle("two",!!v.two);
+    side.querySelectorAll("a").forEach((a,i)=>a.setAttribute("aria-current",i===k?"page":"false"));
+    const P=V[k-1],N=V[k+1];
+    pager.innerHTML=(P?`<a class="prev" href="#${P.ids[0]}"><small>→ السابق</small><b>${P.t}</b></a>`:"")+(N?`<a class="next" href="#${N.ids[0]}"><small>التالي ←</small><b>${N.t}</b></a>`:"");
+    document.title=(k?v.t+" · ":"")+"ملف إنجاز تركية الزهراني";
+    const t=targetId&&document.getElementById(targetId);
+    if(t&&!t.classList.contains("sheet")){
+      if(t.tagName==="DETAILS")t.open=true;
+      requestAnimationFrame(()=>t.scrollIntoView({block:"center"}));
+    } else if(k!==cur) window.scrollTo(0,0);
+    const act=side.querySelector('[aria-current="page"]'); if(act&&side.clientHeight){const top=act.offsetTop,bot=top+act.offsetHeight;if(top<side.scrollTop||bot>side.scrollTop+side.clientHeight)side.scrollTop=top-side.clientHeight/2;}
+    cur=k;
+  }
+  function route(){const id=decodeURIComponent(location.hash.slice(1));show(viewOf(id),id)}
+  window.addEventListener("hashchange",route);
+  route();
+  document.addEventListener("keydown",e=>{
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    const tg=e.target; if(tg&&(tg.closest("input,textarea,select,[contenteditable]")))return;
+    if(!document.getElementById("reg").hidden||!document.getElementById("lb").hidden)return;
+    if(e.key==="ArrowLeft"&&V[cur+1])location.hash=V[cur+1].ids[0];
+    else if(e.key==="ArrowRight"&&V[cur-1])location.hash=V[cur-1].ids[0];
+  });
+})();
 </script>
 </body>
 </html>
