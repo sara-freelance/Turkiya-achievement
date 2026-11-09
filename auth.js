@@ -38,7 +38,7 @@
   dlg.innerHTML =
     '<form class="au-card" id="auForm" novalidate>' +
       '<h2 id="auTitle">دخول المالكة</h2>' +
-      '<p class="sub" id="auSub">للمالكة فقط. الزوار يتصفحون بدون دخول.</p>' +
+      '<p class="sub" id="auSub">للمالكة فقط. يتصفح الزوار الموقع دون تسجيل دخول.</p>' +
       '<label for="auEmail" id="auEmailL">البريد الإلكتروني</label>' +
       '<input id="auEmail" type="email" autocomplete="username" inputmode="email" required>' +
       '<label for="auPass" id="auPassL">كلمة المرور</label>' +
@@ -55,7 +55,7 @@
     mode = m; lastFocus = document.activeElement;
     var isNew = m === "newpass", isReset = m === "reset";
     $("auTitle").textContent = isNew ? "كلمة مرور جديدة" : isReset ? "استعادة كلمة المرور" : "دخول المالكة";
-    $("auSub").textContent = isNew ? "اكتبي كلمة المرور الجديدة (8 أحرف على الأقل)." : isReset ? "نرسل لك رابطًا على بريدك لتعيين كلمة مرور جديدة." : "للمالكة فقط. الزوار يتصفحون بدون دخول.";
+    $("auSub").textContent = isNew ? "اكتبي كلمة المرور الجديدة (8 أحرف على الأقل)." : isReset ? "نرسل لك رابطًا على بريدك لتعيين كلمة مرور جديدة." : "للمالكة فقط. يتصفح الزوار الموقع دون تسجيل دخول.";
     $("auEmail").hidden = $("auEmailL").hidden = isNew;
     $("auPass").hidden = $("auPassL").hidden = isReset;
     $("auPass").autocomplete = isNew ? "new-password" : "current-password";
@@ -86,13 +86,13 @@
       else if (mode === "reset") r = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.href.split("#")[0] });
       else r = await sb.auth.updateUser({ password: pass });
       if (r.error) throw r.error;
-      if (mode === "reset") { err.className = "ok"; err.textContent = "أرسلنا الرابط. افتحي بريدك واتبعي الرابط."; }
+      if (mode === "reset") { err.className = "ok"; err.textContent = "أرسلنا الرابط إلى بريدك. افتحيه واتبعي التعليمات."; }
       else { recovering = false; closeDlg(); }
     } catch (x) {
       var msg = String((x && x.message) || "");
       err.textContent = /invalid login/i.test(msg) ? "البريد أو كلمة المرور غير صحيحة."
-        : /rate|too many/i.test(msg) ? "محاولات كثيرة. انتظري دقيقة وحاولي مرة ثانية."
-        : "صار خطأ. تأكدي من الاتصال وحاولي مرة ثانية.";
+        : /rate|too many/i.test(msg) ? "محاولات كثيرة. انتظري دقيقة ثم حاولي مرة أخرى."
+        : "حدث خطأ. تأكدي من الاتصال وحاولي مرة أخرى.";
     } finally { go.disabled = false; }
   });
 
