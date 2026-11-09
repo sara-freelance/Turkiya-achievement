@@ -126,7 +126,7 @@ table.t{width:100%;border-collapse:collapse;font-size:17px;min-width:560px}
 .t td{padding:12px 14px;border-top:1px solid var(--line);vertical-align:top}
 .t td.c{white-space:nowrap;font-variant-numeric:tabular-nums}
 .t td.num{color:var(--muted);width:2.5em;font-variant-numeric:tabular-nums}
-.t td.nm{min-width:11em}
+.t td.nm{min-width:13em}
 .t tr.tot td{font-weight:700;background:var(--fs,var(--teal-soft))}
 .tg{display:inline-block;font-size:13px;font-weight:700;border-radius:999px;padding:2px 12px;white-space:nowrap}
 .tg.none{background:var(--rose-soft);color:var(--rose)}.tg.med{background:var(--teal-soft);color:var(--teal)}.tg.wr{background:var(--sage-soft);color:var(--sage)}
@@ -187,6 +187,51 @@ table.t{width:100%;border-collapse:collapse;font-size:17px;min-width:560px}
 .sign{font-family:var(--f-display);font-size:22px;color:var(--rose);margin-top:12px}
 .stack{display:flex;flex-direction:column;gap:18px}
 
+/* about = one continuous page */
+.doc{background:var(--sheet);border:1.5px solid var(--line);border-radius:20px;overflow:hidden;max-width:1100px;margin-inline:auto}
+.doc-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding:30px 40px 24px;
+  background:radial-gradient(80% 120% at 100% 0%,var(--rose-soft),transparent 60%),radial-gradient(60% 120% at 0% 100%,var(--sage-soft),transparent 65%),var(--sheet);border-bottom:1px solid var(--line)}
+.doc-k{font-size:14px;color:var(--sage);font-weight:700}
+.doc-nm{font-family:var(--f-display);font-weight:700;font-size:clamp(32px,4vw,46px);color:var(--rose);line-height:1.3}
+.doc-rl{font-size:19px}
+.doc-facts{display:flex;gap:28px;flex-wrap:wrap;margin:0}
+.doc-facts dt{font-size:13px;color:var(--muted)}.doc-facts dd{margin:0;font-size:17px;font-weight:500}
+.doc-verse{text-align:center;padding:26px 40px;border-bottom:1px solid var(--line)}
+.doc-verse .b{font-family:var(--f-verse);font-weight:700;font-size:28px;color:var(--rose)}
+.doc-verse .v{font-family:var(--f-verse);font-size:22px;line-height:2.1;max-width:60ch;margin:6px auto 0}
+.doc-verse .s{font-size:14px;color:var(--muted)}
+.doc-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.doc-row>section{padding:26px 40px}
+.doc-row>section+section{border-inline-start:1px solid var(--line)}
+@media (max-width:820px){.doc-row{grid-template-columns:1fr}.doc-row>section+section{border-inline-start:0;border-top:1px solid var(--line)}.doc-head,.doc-verse,.doc-row>section,.doc-end{padding-inline:22px}}
+.doc h2{font-family:var(--f-display);font-size:24px;font-weight:700;color:var(--teal);margin-bottom:8px}
+.doc h3{font-size:15px;color:var(--sage);font-weight:700;margin-top:10px}
+.doc section p{font-size:18px;line-height:1.95}
+.doc section p+p{margin-top:8px}
+.doc-values{color:var(--sage);font-weight:500}
+.doc-end{padding:28px 40px 34px;text-align:center}
+.doc-end p{max-width:70ch;margin-inline:auto}
+.doc-end .quote{margin-top:16px}
+.fixbtn{font-size:13px;line-height:1;border:1px solid var(--line);background:var(--paper);color:var(--teal);border-radius:8px;padding:3px 6px;cursor:pointer;vertical-align:middle;margin-inline-start:4px}
+.fixbtn:hover{border-color:var(--teal)}
+/* about accordion */
+.accw{max-width:980px;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+.acc-hero{background:radial-gradient(80% 140% at 100% 0%,var(--rose-soft),transparent 60%),var(--sheet);border:1.5px solid var(--line);border-radius:18px;padding:22px 28px}
+.acc{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+.acc summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 24px;font-weight:700;font-size:21px}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary i{flex:none;width:34px;height:34px;border-radius:50%;background:var(--rose-soft);position:relative}
+.acc summary i::before,.acc summary i::after{content:"";position:absolute;inset:0;margin:auto;width:14px;height:2.5px;border-radius:2px;background:var(--rose)}
+.acc summary i::after{transform:rotate(90deg);transition:transform .2s}
+.acc[open] summary{color:var(--teal);border-bottom:1px solid var(--line)}
+.acc[open] summary i{background:var(--teal)}
+.acc[open] summary i::before,.acc[open] summary i::after{background:var(--sheet)}
+.acc[open] summary i::after{transform:rotate(0)}
+.acc summary:hover{background:var(--paper)}
+.acc-c{padding:16px 26px 22px}
+.acc-c p{font-size:18px;line-height:1.95}
+.acc-c p+p{margin-top:8px}
+.acc-c h3{font-size:15px;color:var(--sage);font-weight:700;margin-top:10px}
 /* reports */
 .reps{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:18px;align-items:start}
 .rep{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
@@ -363,8 +408,12 @@ const JAD=[["المسؤولية","القدرة على تحمّل المسؤول�
 // ===== helpers =====
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const arKey=n=>String(n||"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي");
-const sortRows=rows=>[...rows].sort((a,b)=>arKey(a[0]).localeCompare(arKey(b[0]),"ar"));
-const nm=n=>n.endsWith(U)?`<span class="unsure" title="يحتاج تأكيد من الأصل">${esc(n.slice(0,-1))}</span>`:esc(n);
+let FIX={};
+const baseName=n=>String(n).replace(U,"");
+const shown=n=>FIX[baseName(n)]||baseName(n);
+const sortRows=rows=>[...rows].sort((a,b)=>arKey(shown(a[0])).localeCompare(arKey(shown(b[0])),"ar"));
+const nm=n=>{const b=baseName(n),f=FIX[b];const txt=f?esc(f):(n.endsWith(U)?`<span class="unsure" title="يحتاج تأكيد من الأصل">${esc(b)}</span>`:esc(b));
+  return (typeof canWrite!=="undefined"&&canWrite&&typeof DB!=="undefined"&&DB.name_fixes&&DB.name_fixes.state==="ready")?`${txt} <button class="fixbtn" data-act="fixname" data-o="${esc(b)}" title="تعديل الاسم" aria-label="تعديل اسم ${esc(f||b)}">✎</button>`:txt};
 const HM=["محرم","صفر","ربيع الأول","ربيع الآخر","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
 const GR=["أول متوسط","ثاني متوسط","ثالث متوسط"];
 const KINDS={none:"بدون عذر",med:"عذر طبي",wr:"عذر خطي"};
@@ -388,7 +437,7 @@ const ICON={
 };
 
 // ===== live data =====
-const DB={};["absences","notices","frequent","weekly_stats"].forEach(t=>DB[t]={state:"loading",rows:[]});
+const DB={};["absences","notices","frequent","weekly_stats","name_fixes"].forEach(t=>DB[t]={state:"loading",rows:[]});
 let canWrite=false;
 const ready=t=>DB[t].state==="ready";
 const STATIC_WEEKS=STATS.map(x=>({id:null,week:x.w,from_d:x.from+"/1448",to_d:x.to+"/1448",g:x.r.map(r=>({t:r[0],p:r[1],a:r[2],ap:+r[3]})),tot:{t:x.t[0],p:x.t[1],a:x.t[2],ap:+x.t[3]},img:x.img}));
@@ -488,14 +537,14 @@ const TABS={
     let h="";Object.keys(by).sort((x,y)=>y-x).forEach(k=>{const L=byName(Object.values(by[k]).filter(s=>s.days>=3));if(!L.length)return;
       h+=paperBlock(`شهر ${HM[k%100-1]} ${Math.floor(k/100)}هـ`,"من سجل الأعذار · 3 أيام فأكثر",null,table(L,[["اسم الطالبة",r=>esc(r.name),"nm"],["الفصل",r=>esc(r.cls),"c"],["مجموع الأيام",r=>`<b class="flag">${r.days}</b>`,"c"],["منها بعذر",r=>r.ex,"c"],["",r=>done.has(`${r.name}|${r.y}|${r.m}`)?tagK("wr","مضافة للحصر"):(canWrite?`<div class="ra"><button data-act="adopt" data-n="${esc(r.name)}" data-c="${esc(r.cls)}" data-d="${r.days}" data-e="${r.ex}" data-m="${r.m}" data-y="${r.y}">إضافة للحصر</button></div>`:"")]],false),"")});
     return `<p class="note" style="margin:0 0 12px;font-size:16px">طالبات تجاوز غيابهن 3 أيام في الشهر حسب سجل أعذار الطالبات${canWrite?"، وبضغطة تنضاف للحصر":""}.</p>`+(h||`<div class="empty">لا توجد طالبة تجاوز غيابها 3 أيام في أي شهر حسب سجل الأعذار.</div>`)}],
-  ["الأوراق الأصلية",()=>{const n=new Set(XF.flatMap(f=>f.rows.map(r=>r[0].replace(U,"")))).size;
+  ["الأوراق الأصلية",()=>{const n=new Set(XF.flatMap(f=>f.rows.map(r=>shown(r[0])))).size;
     return `<div class="minis"><div class="mini"><b>${XF.length}</b><span>بيانات تحويل 1448هـ</span></div><div class="mini"><b>${n}</b><span>طالبة مختلفة</span></div><div class="mini"><b>${XF.reduce((s,f)=>s+f.rows.length,0)}</b><span>حالة تحويل</span></div><div class="mini"><b>${FORMS.length}</b><span>استمارات 1447هـ</span></div></div>`+
      `<h2 class="sec-t">بيان بأسماء الطالبات كثيرات الغياب · الفصل الأول 1448هـ</h2><div class="cols2">`+XF.map(f=>paperBlock(esc(f.t),`${esc(f.cls)} · ${f.rows.length} طالبة`,f.img,
       `<div class="tw"><table class="t"><thead><tr><th>م</th><th>اسم الطالبة</th><th>الفصل</th><th>أيام بعذر</th><th>الإجراء</th></tr></thead><tbody>${sortRows(f.rows).map((r,i)=>`<tr><td class="num">${i+1}</td><td class="nm">${nm(r[0])}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td><td>${esc(r[3]||"")}</td></tr>`).join("")}</tbody></table></div>`,
       "وكيلة الشؤون الطلابية: فاطمة سعيد القرني")).join("")+`</div>`+
      `<h2 class="sec-t" style="margin-top:26px">استمارات حصر الطالبات كثيرات الغياب · 1447هـ</h2><div class="cols2">`+FORMS.map(f=>paperBlock("حصر الطالبات كثيرات الغياب",esc(f.t),f.img,
       `<div class="tw"><table class="t"><thead><tr><th>م</th><th>اسم الطالبة</th><th>الفصل</th><th>أيام الغياب</th></tr></thead><tbody>${sortRows(f.rows).map((r,i)=>`<tr><td class="num">${i+1}</td><td class="nm">${nm(r[0])}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join("")}</tbody></table></div>`,esc(f.foot))).join("")+`</div>`+
-     `<p class="note">الأسماء مرتبة أبجديًا. الأسماء اللي تحتها خط منقّط من خط اليد وتحتاج تأكيد.</p>`}],
+     `<p class="note">الأسماء مرتبة أبجديًا. الأسماء اللي تحتها خط منقّط من خط اليد وتحتاج تأكيد.${canWrite?" اضغطي ✎ جنب أي اسم لتعديله.":""}</p>`}],
  ],
  stats:[
   ["الرسم البياني",()=>{const W=allWeeks();const mx=W.reduce((a,b)=>b.tot.ap>a.tot.ap?b:a,W[0]),mn=W.reduce((a,b)=>b.tot.ap<a.tot.ap?b:a,W[0]),last=W[W.length-1];
@@ -510,20 +559,7 @@ const TABS={
 
 // ===== portfolio pages =====
 const PORT={
- about:{title:"عني",icon:"user",ib:"var(--rose-soft)",ifc:"var(--rose)",sub:"المقدمة، الهدف، الرؤية والرسالة",render:()=>`<div class="about">
-  <div class="stack">
-   <div class="card idcard"><div style="font-size:14px;color:var(--sage);font-weight:700">ملف الأهداف والجدارات · 1447 – 1448هـ</div><div class="nm">تركية يحيى الزهراني</div><div class="rl">مساعد إداري ممارس ثاني</div>
-    <div class="facts"><div>المدرسة<b>المتوسطة الخامسة</b></div><div>الإدارة<b>تعليم محافظة جدة</b></div><div>مديرة المدرسة<b>مستورة عائض العتيبي</b></div></div></div>
-   <div class="card"><h2>المقدمة</h2><div class="prose"><p>بسم الله أبتدي، وبكتابه أقتدي، وبسنة رسوله ﷺ أهتدي..</p><p>الحمد لله ذي الفضل والمنّ والعطاء، الذي خلق وبرأ، وأعطى فأبدع، وأبهر وأكرم وأجزل..</p><p>أما بعد.. تحية طيبة مشرقة لك يا من تقرأ ملف الإنجاز..</p><p>هذا هو ملف الإنجاز الذي خصصته ليكون حقيبة مرجعية لأعمالي، حيث دوّنت وجمعت ونسّقت كل إنجازاتي.</p></div></div>
-   <div class="card"><h2>الهدف من ملف الإنجاز</h2><div class="prose"><p>مع رؤية 2030 أصبحت التطورات المستحدثة في التكنولوجيا وتوظيفها مطلبًا مهمًا في إعداد الموظف وتميّزه وتطويره في مجالات الحاسب الآلي، لتطوير مجال التعليم، ولضرورة ملف الإنجاز.</p><p>من أكثر الأشياء التي تساعد على إتمام العمل وترتيبه: وضع الأولويات، ووضع الأهداف المناسبة التي يجب أن تحققها هذه الأعمال. ولهذا فإن ملف الإنجاز يُعد من أكثر الأشياء التي من الممكن أن تدير لك أعمالك، سواء الإدارية أو غير الإدارية.</p><p>وهو الملف الذي يحفظ لي حقي من بداية العمل، وإنجازاتي العملية.</p></div></div>
-  </div>
-  <div class="stack">
-   <div class="card verse"><div class="b">بسم الله الرحمن الرحيم</div><p class="v">﴿وَقُلِ اعْمَلُوا فَسَيَرَى اللَّهُ عَمَلَكُمْ وَرَسُولُهُ وَالْمُؤْمِنُونَ ۖ وَسَتُرَدُّونَ إِلَىٰ عَالِمِ الْغَيْبِ وَالشَّهَادَةِ فَيُنَبِّئُكُم بِمَا كُنتُمْ تَعْمَلُونَ﴾</p><p class="s">سورة التوبة · 105</p></div>
-   <div class="card"><h2>رؤيتي ورسالتي</h2><div class="vm"><div><h3>رؤيتي</h3><p>الريادة والتميز بتقديم خدمات إدارية عالية الجودة ومشاركة مجتمعية فعالة.</p></div><div><h3>رسالتي</h3><p>خدمات تحقق الجودة في الأداء لكافة الفئات، وتحويل المواهب والقدرات إلى إبداعات واقعية.</p></div></div></div>
-   <div class="card"><h2>رؤية وزارة التعليم ورسالتها</h2><div class="vm"><div><h3>رؤيتنا</h3><p>متعلم.. معتز بدينه.. منتمٍ لوطنه.. منتج للمعرفة.. منافس عالميًا.</p></div><div><h3>رسالتنا</h3><p>تقديم تعليم وتعلّم متميز للجميع بما يواكب التوجهات العالمية في ضوء السياسات التعليمية للمملكة، ومشاركة مجتمعية في بيئة تعليمية جاذبة وآمنة، ترتقي بالمهارات والقدرات، وتثري البحث العلمي، وتشجع على الابتكار والإبداع.</p></div></div>
-    <div class="values"><span>النزاهة</span><span>الإنجاز</span><span>التكامل</span><span>المبادرة</span><span>الإبداع</span><span>الشفافية</span><span>العمل المؤسسي</span></div></div>
-   <div class="card"><h2>في الختام</h2><div class="prose"><p>بالتفاني والإصرار.. تم تحقيق إنجازات ملموسة وملحوظة، ومع العمل الجماعي والتعاون بنيت قاعدة قوية للنجاح..</p><p>هذا الملف هو بداية لمرحلة جديدة من التحديات والفرص، نتطلع إلى استخدام هذا الإنجاز كمنصة للنمو المستقبلي وتحقيق المزيد من الإنجازات الرائعة.</p></div><p class="quote" style="margin-top:14px">قلوبنا تحمل قيمًا نغرسها لتبقى أثرًا</p><div class="sign">تركية يحيى الزهراني</div></div>
-  </div></div>`},
+ about:{title:"عني",icon:"user",ib:"var(--rose-soft)",ifc:"var(--rose)",sub:"المقدمة، الهدف، الرؤية والرسالة",desc:"اضغطي على أي عنوان لفتحه",render:()=>`<div class="accw"><div class="acc-hero"><div class="doc-k">ملف الأهداف والجدارات · 1447 – 1448هـ</div><div class="doc-nm">تركية يحيى الزهراني</div><div class="doc-rl">مساعد إداري ممارس ثاني · المتوسطة الخامسة · تعليم محافظة جدة</div><div class="doc-rl" style="color:var(--muted);font-size:16px">مديرة المدرسة: مستورة عائض العتيبي</div></div><details class="acc"><summary><span>البسملة والآية</span><i aria-hidden="true"></i></summary><div class="acc-c"><div class="doc-verse" style="border:0;padding:6px 0"><div class="b">بسم الله الرحمن الرحيم</div><p class="v">﴿وَقُلِ اعْمَلُوا فَسَيَرَى اللَّهُ عَمَلَكُمْ وَرَسُولُهُ وَالْمُؤْمِنُونَ ۖ وَسَتُرَدُّونَ إِلَىٰ عَالِمِ الْغَيْبِ وَالشَّهَادَةِ فَيُنَبِّئُكُم بِمَا كُنتُمْ تَعْمَلُونَ﴾</p><p class="s">سورة التوبة · 105</p></div></div></details><details class="acc" open><summary><span>المقدمة</span><i aria-hidden="true"></i></summary><div class="acc-c"><p>بسم الله أبتدي، وبكتابه أقتدي، وبسنة رسوله ﷺ أهتدي..</p><p>الحمد لله ذي الفضل والمنّ والعطاء، الذي خلق وبرأ، وأعطى فأبدع، وأبهر وأكرم وأجزل..</p><p>أما بعد.. تحية طيبة مشرقة لك يا من تقرأ ملف الإنجاز..</p><p>هذا هو ملف الإنجاز الذي خصصته ليكون حقيبة مرجعية لأعمالي، حيث دوّنت وجمعت ونسّقت كل إنجازاتي.</p></div></details><details class="acc"><summary><span>الهدف من ملف الإنجاز</span><i aria-hidden="true"></i></summary><div class="acc-c"><p>مع رؤية 2030 أصبحت التطورات المستحدثة في التكنولوجيا وتوظيفها مطلبًا مهمًا في إعداد الموظف وتميّزه وتطويره في مجالات الحاسب الآلي، لتطوير مجال التعليم، ولضرورة ملف الإنجاز.</p><p>من أكثر الأشياء التي تساعد على إتمام العمل وترتيبه: وضع الأولويات، ووضع الأهداف المناسبة التي يجب أن تحققها هذه الأعمال. ولهذا فإن ملف الإنجاز يُعد من أكثر الأشياء التي من الممكن أن تدير لك أعمالك، سواء الإدارية أو غير الإدارية.</p><p>وهو الملف الذي يحفظ لي حقي من بداية العمل، وإنجازاتي العملية.</p></div></details><details class="acc"><summary><span>رؤيتي ورسالتي</span><i aria-hidden="true"></i></summary><div class="acc-c"><h3>رؤيتي</h3><p>الريادة والتميز بتقديم خدمات إدارية عالية الجودة ومشاركة مجتمعية فعالة.</p><h3>رسالتي</h3><p>خدمات تحقق الجودة في الأداء لكافة الفئات، وتحويل المواهب والقدرات إلى إبداعات واقعية.</p></div></details><details class="acc"><summary><span>رؤية وزارة التعليم ورسالتها وقيمها</span><i aria-hidden="true"></i></summary><div class="acc-c"><h3>رؤيتنا</h3><p>متعلم.. معتز بدينه.. منتمٍ لوطنه.. منتج للمعرفة.. منافس عالميًا.</p><h3>رسالتنا</h3><p>تقديم تعليم وتعلّم متميز للجميع بما يواكب التوجهات العالمية في ضوء السياسات التعليمية للمملكة، ومشاركة مجتمعية في بيئة تعليمية جاذبة وآمنة، ترتقي بالمهارات والقدرات، وتثري البحث العلمي، وتشجع على الابتكار والإبداع.</p><h3>قيمنا</h3><p class="doc-values">النزاهة · الإنجاز · التكامل · المبادرة · الإبداع · الشفافية · العمل المؤسسي</p></div></details><details class="acc"><summary><span>في الختام</span><i aria-hidden="true"></i></summary><div class="acc-c"><p>بالتفاني والإصرار.. تم تحقيق إنجازات ملموسة وملحوظة، ومع العمل الجماعي والتعاون بنيت قاعدة قوية للنجاح..</p><p>هذا الملف هو بداية لمرحلة جديدة من التحديات والفرص، نتطلع إلى استخدام هذا الإنجاز كمنصة للنمو المستقبلي وتحقيق المزيد من الإنجازات الرائعة.</p><p class="quote" style="margin-top:12px">قلوبنا تحمل قيمًا نغرسها لتبقى أثرًا</p><div class="sign" style="text-align:center">تركية يحيى الزهراني</div></div></details></div>`},
  goals:{title:"أهداف الميثاق",icon:"target",ib:"var(--teal-soft)",ifc:"var(--teal)",sub:"4 أهداف و4 جدارات مع الشواهد",desc:"أهداف وجدارات ميثاق الأداء الوظيفي لعام 2026م كما وردت في نموذج التقييم، ومعها الشواهد في هذا الملف",render:()=>{
   const G=[["إعداد سجل غياب الطالبات للعام الحالي 2026م","سجل","30%","1","excuses"],["إعداد ملف إشعارات غياب الطالبات للعام الحالي 2026م","ملف","30%","1","notices"],["إعداد 4 تقارير تحويل الطالبات كثيرات الغياب خلال العام الحالي 2026م","تقارير","20%","4","frequent","✓ 6 بيانات تحويل"],["إعداد 8 تقارير إحصائية لغياب الطالبات خلال العام الحالي 2026م","إحصائية","20%","8","stats","✓ 7 إحصائيات + حصر الخميس"]];
   return `<h2 class="sec-t">أولًا: الأهداف</h2>`+table(G.map(g=>({g})),[["الهدف",r=>esc(r.g[0])],["معيار القياس",r=>r.g[1],"c"],["الوزن",r=>r.g[2],"c"],["المستهدف",r=>r.g[3],"c"],["الشاهد",r=>`<a href="#${r.g[4]}" style="color:var(--teal);font-weight:700">${REC[r.g[4]].title}</a>${r.g[5]?`<br><small style="color:var(--sage)">${r.g[5]}</small>`:""}`]],false)+
@@ -537,7 +573,7 @@ const PORT={
     <div class="rep-e">${r.ev?`<button class="ev" data-full="img/${r.ev}.jpg" aria-label="تكبير شواهد ${esc(r.t)}"><img src="img/${r.ev}.jpg" alt="شواهد ${esc(r.t)}" loading="lazy"></button>`:`<div class="ev-none">الشواهد المصورة تُضاف لاحقًا</div>`}<button class="orig" data-full="img/${r.pg}.jpg" style="align-self:flex-start">عرض التقرير الأصلي</button></div></article>`).join("")+`</div>`}},
  followup:{title:"المتابعة والإشراف",icon:"clip",ib:"var(--navy-soft)",ifc:"var(--navy)",sub:"استمارات الغياب وجداول الإشراف",desc:"استمارات حصر الطالبات كثيرات الغياب من قِبل المراقبة، وجداول الإشراف الأسبوعي",tabs:[
   ["استمارات الغياب",()=>`<div class="cols2">`+FORMS.map(f=>paperBlock("استمارة حصر الطالبات كثيرات الغياب",esc(f.t),f.img,
-    `<div class="tw"><table class="t"><thead><tr><th>م</th><th>اسم الطالبة</th><th>الفصل</th><th>أيام الغياب</th></tr></thead><tbody>${sortRows(f.rows).map((r,i)=>`<tr><td class="num">${i+1}</td><td class="nm">${nm(r[0])}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join("")}</tbody></table></div>`+(f.note?`<p style="padding:12px 18px;font-size:15px;color:var(--muted);border-top:1px solid var(--line)">${esc(f.note)}</p>`:""),esc(f.foot))).join("")+`</div><p class="note">الأسماء مرتبة أبجديًا.</p>`],
+    `<div class="tw"><table class="t"><thead><tr><th>م</th><th>اسم الطالبة</th><th>الفصل</th><th>أيام الغياب</th></tr></thead><tbody>${sortRows(f.rows).map((r,i)=>`<tr><td class="num">${i+1}</td><td class="nm">${nm(r[0])}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join("")}</tbody></table></div>`+(f.note?`<p style="padding:12px 18px;font-size:15px;color:var(--muted);border-top:1px solid var(--line)">${esc(f.note)}</p>`:""),esc(f.foot))).join("")+`</div><p class="note">الأسماء مرتبة أبجديًا.${canWrite?" اضغطي ✎ جنب أي اسم لتعديله.":""}</p>`],
   ["جداول الإشراف",()=>`<div class="cols2">`+SCHEDS.map(sc=>{const mine=sc.d.flat().filter(x=>x===T).length;return paperBlock(esc(sc.t),esc(sc.sub),sc.img,
     `<div class="tw"><table class="t sched"><thead><tr><th>الحصة</th>${DAYS.map(d=>`<th>${d}</th>`).join("")}</tr></thead><tbody>${PER.map((p,i)=>`<tr><td>${p}</td>${sc.d.map(day=>{const v=day[i];return `<td><span class="${v===T?"me":v===J?"all":""}">${v===T?"تركية":v===W?"وفاء":v===H?"هند":"الجميع"}</span></td>`}).join("")}</tr>`).join("")}</tbody></table></div>`,
     `حصص إشراف تركية: <b style="color:var(--rose)">${mine}</b> في الأسبوع · إعداد وفاء المالكي`)}).join("")+`</div>`],
@@ -555,7 +591,7 @@ const PORT={
 // ===== render =====
 const app=document.getElementById("app");
 function home(){
-  const nf=new Set([...XF.flatMap(f=>f.rows.map(r=>r[0].replace(U,""))),...DB.frequent.rows.map(r=>r.name)]).size;
+  const nf=new Set([...XF.flatMap(f=>f.rows.map(r=>shown(r[0]))),...DB.frequent.rows.map(r=>r.name)]).size;
   const W=allWeeks(),last=W[W.length-1];
   const nums={excuses:[ready("absences")?DB.absences.rows.length:"–","غياب مسجل"],notices:[ready("notices")?DB.notices.rows.length:"–","إشعار مسجل"],frequent:[nf,"طالبة محوّلة"],stats:[f2(last.tot.ap)+"%",`غياب الأسبوع ${last.week}`]};
   return `<div class="hello"><div><h1>${canWrite?"أهلًا تركية":"ملف إنجاز تركية يحيى الزهراني"}</h1><p>المتوسطة الخامسة · مساعد إداري · 1447 – 1448هـ</p></div>${canWrite?`<button class="add-big" data-act="chooser">＋ تسجيل جديد</button>`:""}</div>
@@ -598,6 +634,18 @@ function openForm(key,row,preset){F=key;const R=REC[key];editId=row?row.id:null;
 function chooser(){lastFocus=document.activeElement;dcard.style.setProperty("--fc","var(--rose)");
   dcard.innerHTML=`<h2 id="dlgT">وش تبين تسجلين؟</h2><div class="choose">${Object.keys(REC).map(k=>`<button data-act="pick" data-k="${k}" style="--c:${REC[k].fc}"><b>${REC[k].short}</b><span>${REC[k].choose}</span></button>`).join("")}</div><div class="dlg-act"><button class="btn ghost" data-act="close">إلغاء</button></div>`;
   dlg.hidden=false;dcard.querySelector("button").focus()}
+function fixDialog(o){lastFocus=document.activeElement;const cur=FIX[o]||o;dcard.style.setProperty("--fc","var(--teal)");
+  dcard.innerHTML=`<form id="fixform" novalidate><h2 id="dlgT">تعديل اسم الطالبة</h2><p class="note" style="margin:0 0 8px">مكتوب في الورقة: <b>${esc(o)}</b></p>
+   <div class="ff"><div><label for="fixName">الاسم الصحيح</label><input id="fixName" value="${esc(cur)}" autocomplete="off"></div></div>
+   <p class="note">يتعدّل الاسم في كل مكان يظهر فيه بالموقع.</p><p class="err" id="derr" role="alert"></p>
+   <div class="dlg-act"><button type="submit" class="btn" id="fixSave">حفظ</button><button type="button" class="btn ghost" data-act="close">إلغاء</button>${FIX[o]?`<button type="button" class="btn ghost" data-act="fixreset" data-o="${esc(o)}">رجوع للاسم الأصلي</button>`:""}</div></form>`;
+  dlg.hidden=false;const i=document.getElementById("fixName");i.focus();i.select();
+  document.getElementById("fixform").onsubmit=async e=>{e.preventDefault();e.stopPropagation();const v=document.getElementById("fixName").value.trim().replace(/\s+/g," "),m=document.getElementById("derr"),b=document.getElementById("fixSave");
+    if(v.split(" ").length<2){m.textContent="اكتبي اسم الطالبة كاملًا.";return}
+    b.disabled=true;b.textContent="جارٍ الحفظ…";
+    try{const {data,error}=await Site.sb.from("name_fixes").upsert({original:o,corrected:v},{onConflict:"original"}).select();if(error)throw error;if(!data||!data.length)throw {code:"denied"};await load("name_fixes");closeDlg();render(true)}
+    catch(x){m.textContent=(x&&(x.code==="denied"||x.code==="42501"))?"ما عندك صلاحية التعديل.":(x&&(x.code==="42P01"||/does not exist|schema cache/i.test(x.message||"")))?"جدول تعديل الأسماء غير موجود. شغّلي ملف الإعداد في Supabase.":"ما انحفظ. حاولي مرة ثانية."}
+    finally{b.disabled=false;b.textContent="حفظ"}}}
 function closeDlg(){dlg.hidden=true;editId=null;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
 function readForm(R){const o={},err=m=>{throw {user:m}};const strip=l=>l.replace(/ \(.*\)/,"");
   for(const f of R.fields){const id="ff_"+f.k;
@@ -614,7 +662,7 @@ function readForm(R){const o={},err=m=>{throw {user:m}};const strip=l=>l.replace
     if(f.t==="int"){const n=parseInt(v,10);if(!(n>=f.min&&n<=f.max))err(`${strip(f.l)}: رقم بين ${f.min} و${f.max}.`);v=n}
     o[f.k]=v}
   return o}
-dlg.addEventListener("submit",async e=>{e.preventDefault();const R=REC[F],m=document.getElementById("derr"),b=document.getElementById("dsave");m.textContent="";
+dlg.addEventListener("submit",async e=>{if(e.target.id!=="dform")return;e.preventDefault();const R=REC[F],m=document.getElementById("derr"),b=document.getElementById("dsave");m.textContent="";
   let body;try{body=readForm(R)}catch(x){m.textContent=x.user||"تأكدي من البيانات.";return}
   b.disabled=true;b.textContent="جارٍ الحفظ…";
   try{const q=editId?Site.sb.from(R.table).update(body).eq("id",editId).select():Site.sb.from(R.table).insert(body).select();const {data,error}=await q;if(error)throw error;if(!data||!data.length)throw {code:"denied"};
@@ -635,6 +683,8 @@ document.addEventListener("click",async e=>{
   if(act==="filter"){UI.filter=a.dataset.k;render(true);return}
   if(act==="rfilter"){UI.rfilter=a.dataset.k;render(true);return}
   if(act==="add"){openForm(a.dataset.rec);return}
+  if(act==="fixname"){fixDialog(a.dataset.o);return}
+  if(act==="fixreset"){const o=a.dataset.o;const r=DB.name_fixes.rows.find(x=>x.original===o);if(r){try{const {error}=await Site.sb.from("name_fixes").delete().eq("id",r.id);if(error)throw error;await load("name_fixes");closeDlg();render(true)}catch(x){document.getElementById("derr").textContent="ما انحفظ. حاولي مرة ثانية."}}return}
   const R=REC[route];if(!R)return;const rows=R.table==="weekly_stats"?DB.weekly_stats.rows:DB[R.table].rows,id=a.dataset.id;
   if(act==="edit")openForm(route,rows.find(r=>r.id===id));
   else if(act==="del"){UI.confirm=id;render(true)}
@@ -650,13 +700,14 @@ document.getElementById("lbX").onclick=closeLb;lb.addEventListener("click",e=>{i
 document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!lb.hidden)closeLb();else if(!dlg.hidden)closeDlg()});
 
 // ===== names list =====
-function names(){const s=new Set();["absences","notices","frequent"].forEach(t=>DB[t].rows.forEach(r=>s.add(r.name)));[...FORMS,...XF].forEach(f=>f.rows.forEach(r=>s.add(r[0].replace(U,""))));
+function names(){const s=new Set();["absences","notices","frequent"].forEach(t=>DB[t].rows.forEach(r=>s.add(r.name)));[...FORMS,...XF].forEach(f=>f.rows.forEach(r=>s.add(shown(r[0]))));
   document.getElementById("nameList").innerHTML=[...s].sort((a,b)=>arKey(a).localeCompare(arKey(b),"ar")).map(n=>`<option value="${esc(n)}">`).join("")}
 document.getElementById("clsList").innerHTML=[1,2,3].flatMap(g=>Array.from({length:10},(_,i)=>`<option value="${g}/${i+1}">`)).join("");
 
 // ===== load =====
 async function load(t){const {data,error}=await Site.sb.from(t).select("*").limit(5000);
   if(error)DB[t].state=(error.code==="42P01"||/does not exist|schema cache/i.test(error.message||""))?"missing":(DB[t].rows.length?"ready":"slow");else{DB[t].rows=data;DB[t].state="ready"}
+  if(t==="name_fixes"){FIX={};DB[t].rows.forEach(r=>FIX[r.original]=r.corrected)}
   names();if(dlg.hidden)render(true)}
 if(!window.Site||!Site.ready){Object.keys(DB).forEach(t=>DB[t].state="off")}
 else{const tm=setTimeout(()=>{Object.keys(DB).forEach(t=>{if(DB[t].state==="loading")DB[t].state="slow"});render(true)},10000);
