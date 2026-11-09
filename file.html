@@ -378,6 +378,11 @@ body{font-size:17px}
 .shelf-item{display:flex;justify-content:center}
 .shelf .folder{width:min(290px,100%)}
 .shelf .fl-t{font-size:16px}
+.cover-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:28px;align-items:center}
+.cover-img{display:flex;flex-direction:column;gap:8px;align-items:center;border:0;background:none;padding:0;cursor:zoom-in;font:inherit}
+.cover-img img{width:100%;max-height:420px;object-fit:contain;border-radius:8px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.cover-img span{font-size:13px;color:var(--muted)}
+@media (max-width:760px){.cover-wrap{grid-template-columns:1fr}.cover-img img{max-height:300px}}
 .rb-title{font-family:var(--f-display);font-weight:700;font-size:22px;flex:1;text-align:center}
 @media (max-width:700px){.rb-title{display:none}}
 .reg-nav button[aria-current="true"]{background:var(--fc,var(--teal))}
@@ -1017,7 +1022,7 @@ document.addEventListener("click",e=>{const a=e.target.closest("[data-jad]");if(
 
   // pages = cover, index, intro, vision, goals, data..., closing
   function pagesOf(F){return [
-    ["الغلاف",()=>`<div class="rp-cover"><div class="rp-meta">المتوسطة الخامسة · العام الدراسي 1447 – 1448هـ</div><div class="big">${F.title.replace(" ","<br>")}</div><div class="rp-pill">مساعد إداري / تركية يحيى الزهراني</div><div class="rp-meta">مديرة المدرسة / مستورة العتيبي</div>${F.tagline?`<div class="rp-meta" style="color:var(--fc)">${F.tagline}</div>`:""}${F.coverImg?`<button class="orig" data-full="img/${F.coverImg}.jpg">عرض الغلاف الورقي</button>`:""}</div>`],
+    ["الغلاف",()=>`<div class="${F.coverImg?"cover-wrap":""}"><div class="rp-cover"><div class="rp-meta">المتوسطة الخامسة · العام الدراسي 1447 – 1448هـ</div><div class="big">${F.title.replace(" ","<br>")}</div><div class="rp-pill">مساعد إداري / تركية يحيى الزهراني</div><div class="rp-meta">مديرة المدرسة / مستورة العتيبي</div>${F.tagline?`<div class="rp-meta" style="color:var(--fc)">${F.tagline}</div>`:""}</div>${F.coverImg?`<button class="cover-img" data-full="img/${F.coverImg}.jpg" aria-label="تكبير الغلاف الورقي"><img src="img/${F.coverImg}.jpg" alt="الغلاف الورقي: ${F.title}"><span>الغلاف الورقي · اضغطي للتكبير</span></button>`:""}</div>`],
     ["الفهرس",null],
     ["المقدمة",()=>head("المقدمة")+box(F.intro)],
     ["الرؤية والرسالة",()=>head("الرؤية والرسالة")+`<div class="rp-cards"><div class="rp-card"><h4>الرؤية</h4><p>${F.vision}</p></div><div class="rp-card"><h4>الرسالة</h4><p>${F.mission}</p></div></div>`],
@@ -1119,7 +1124,7 @@ document.addEventListener("click",e=>{const a=e.target.closest("[data-jad]");if(
     <button class="folder" data-open-folder="${k}" aria-haspopup="dialog" style="--fc:${F.color}">
       <span class="f-count" data-fcount="${k}" hidden></span><span class="f-back"><span class="f-tab"></span></span>
       <span class="f-paper p3"></span><span class="f-paper p2"></span>
-      <span class="f-paper p1"><span class="pp-k">المتوسطة الخامسة</span><span class="pp-l"></span><span class="pp-l s"></span><span class="pp-l"></span></span>
+      <span class="f-paper p1"${F.coverImg?` style="background:url(img/${F.coverImg}.jpg) center 20%/cover"`:""}><span class="pp-k"${F.coverImg?" hidden":""}>المتوسطة الخامسة</span><span class="pp-l"></span><span class="pp-l s"></span><span class="pp-l"></span></span>
       <span class="f-front"><span class="f-label"><span class="fl-t">${F.title}</span><span class="fl-s">شاهد الهدف ${F.goal}</span></span><span class="f-open">فتح الملف</span></span>
     </button></div>`}).join("");
 
