@@ -27,11 +27,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap">
 <style>
-/* Layout: landing = hero (name + a stacked file you can open) → numbers → chapters grid → live register teaser → closing quote */
-/* Layout: a bound file of paper sheets stacked down the page; sticky spine bar with chapter menu; evidence opens full-size */
+/* Layout: dashboard home (big tiles in two groups) → one page per section with back button and ≤3 tabs */
 :root{
   --paper:#F7F0EE; --sheet:#FFFDFC; --ink:#2B2224; --muted:#776769; --line:#EADCD9;
   --rose:#A84D62; --rose-soft:#F3DDE2; --sage:#56755B; --sage-soft:#E2ECE1; --teal:#1E5660; --teal-soft:#DCEBEC;
+  --navy:#34508A; --navy-soft:#E1E8F5; --gold:#9A6B1F; --gold-soft:#F4EAD6;
   --shadow:0 1px 2px rgba(80,40,50,.06),0 8px 28px rgba(80,40,50,.07);
   --f-display:"El Messiri","Tajawal",sans-serif;
   --f-verse:"Amiri","Traditional Arabic",serif;
@@ -40,201 +40,638 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#191415; --sheet:#231C1E; --ink:#F2E8E7; --muted:#B5A4A6; --line:#3A2F32;
   --rose:#E59BAD; --rose-soft:#3C2429; --sage:#A3C2A5; --sage-soft:#22302A; --teal:#86BEC7; --teal-soft:#1B3236;
+  --navy:#9DB6EA; --navy-soft:#1E2738; --gold:#E2BE7E; --gold-soft:#33291A;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.25); color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#191415; --sheet:#231C1E; --ink:#F2E8E7; --muted:#B5A4A6; --line:#3A2F32;
   --rose:#E59BAD; --rose-soft:#3C2429; --sage:#A3C2A5; --sage-soft:#22302A; --teal:#86BEC7; --teal-soft:#1B3236;
+  --navy:#9DB6EA; --navy-soft:#1E2738; --gold:#E2BE7E; --gold-soft:#33291A;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.25); color-scheme:dark}
 
-
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.8}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.8;direction:rtl}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--sheet)}
 img{max-width:100%}
-a{color:inherit}
-h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
 p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:6px}
 [hidden]{display:none!important}
-.wrap{max-width:1360px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
-.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px}
-.brand{font-family:var(--f-display);font-weight:700;font-size:19px;color:var(--teal);text-decoration:none;white-space:nowrap}
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--sheet);border-bottom:1px solid var(--line);
+  padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.top-in{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;height:72px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:26px;color:var(--teal);text-decoration:none;white-space:nowrap}
+.brand small{font-family:var(--f-body);font-weight:500;font-size:14px;color:var(--muted);margin-inline-start:10px}
 .top-act{display:flex;gap:8px;align-items:center}
-.pill{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.pill{font-size:16px;border:1.5px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:999px;padding:7px 18px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.au-chip{font-size:16px!important;padding:7px 18px!important}
+@media (max-width:600px){.home-pill{display:none}.brand small{display:none}.brand{font-size:21px}.pill,.au-chip{font-size:14px!important;padding:6px 12px!important}.top-in{height:62px}}
 
-.hero{padding-block:clamp(36px,7vw,84px) clamp(30px,6vw,64px)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,5vw,64px);align-items:center}
-@media (max-width:820px){.hero .wrap{grid-template-columns:1fr}.stack{max-width:340px;margin-inline:auto}}
-.eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:14px;color:var(--sage);font-weight:500;background:var(--sage-soft);border-radius:999px;padding:4px 14px}
-.hero h1{font-family:var(--f-display);font-weight:700;font-size:clamp(46px,8.5vw,92px);line-height:1.15;color:var(--ink);margin-top:18px}
-.hero h1 span{color:var(--rose);display:block}
-.role{font-size:clamp(17px,2.2vw,20px);color:var(--muted);margin-top:14px;max-width:46ch}
-.role b{color:var(--ink);font-weight:500}
-.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:16px;font-weight:600;border-radius:999px;padding:11px 26px;text-decoration:none;cursor:pointer;border:1.5px solid transparent;transition:transform .2s}
-.btn:hover{transform:translateY(-1px)}
-.btn.main{background:var(--teal);color:var(--sheet)}
-.btn.line{border-color:var(--line);background:var(--sheet);color:var(--ink)}
-.btn svg{width:18px;height:18px}
+.main{max-width:1320px;margin:0 auto;padding-block:30px 60px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
 
-/* stacked file */
-.stack{position:relative;aspect-ratio:3/4;width:100%;text-decoration:none;color:inherit;display:block}
-.sh{position:absolute;inset:0;border-radius:10px;background:var(--sheet);border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-.sh.s3{transform:rotate(-6deg) translate(-4%,3%);background:var(--sage-soft)}
-.sh.s2{transform:rotate(4deg) translate(3%,1%);background:var(--rose-soft)}
-.sh.s1{display:flex;flex-direction:column;justify-content:space-between;padding:9% 9% 8%;overflow:hidden;
-  background:radial-gradient(90% 55% at 100% 0%,var(--rose-soft),transparent 60%),radial-gradient(80% 50% at 0% 100%,var(--sage-soft),transparent 65%),var(--sheet)}
-.stack:hover .s3{transform:rotate(-9deg) translate(-7%,4%)}.stack:hover .s2{transform:rotate(7deg) translate(6%,1%)}.stack:hover .s1{transform:translateY(-2%)}
-@media (prefers-reduced-motion:reduce){.sh,.btn{transition:none}}
-.s1 .k{font-size:12px;color:var(--muted);line-height:1.6}
-.s1 .t{font-size:13px;color:var(--sage);font-weight:500}
-.s1 .n{font-family:var(--f-display);font-weight:700;font-size:clamp(30px,5vw,40px);line-height:1.25;color:var(--rose)}
-.s1 .r{font-size:14px}
-.s1 .f{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;font-size:11px;color:var(--muted)}
-.s1 .f b{display:block;color:var(--ink);font-weight:500;font-size:13px}
+/* home */
+.hello{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.hello h1{font-family:var(--f-display);font-size:clamp(30px,4vw,42px);font-weight:700;line-height:1.3}
+.hello p{color:var(--muted);font-size:18px;margin-top:2px}
+.add-big{font-weight:700;font-size:21px;background:var(--rose);color:#fff;border:0;border-radius:16px;padding:16px 32px;cursor:pointer;box-shadow:0 8px 20px rgba(168,77,98,.28)}
+.add-big:hover{filter:brightness(1.06)}
+.gh{display:flex;align-items:center;gap:12px;font-weight:700;font-size:20px;margin:6px 0 14px}
+.gh::after{content:"";flex:1;height:1.5px;background:var(--line)}
+.rgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-bottom:32px}
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:1000px){.rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.rgrid,.pgrid{grid-template-columns:minmax(0,1fr)}}
+.rc{display:block;text-decoration:none;background:var(--sheet);border-radius:18px;padding:20px 22px;border:1.5px solid var(--line);border-top:8px solid var(--fc);transition:transform .15s,box-shadow .15s}
+.rc:hover,.pc:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.rc h3{font-size:20px;font-weight:700;line-height:1.4}
+.rc .n{font-family:var(--f-display);font-weight:700;font-size:46px;color:var(--fc);line-height:1.25;margin-top:8px;font-variant-numeric:tabular-nums}
+.rc .l{color:var(--muted);font-size:15px}
+.rc .go{margin-top:10px;font-size:15px;color:var(--fc);font-weight:700}
+.pc{display:flex;gap:16px;align-items:center;text-decoration:none;background:var(--sheet);border:1.5px solid var(--line);border-radius:18px;padding:20px 22px;min-height:104px;transition:transform .15s,box-shadow .15s}
+.ic{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;flex:none;background:var(--ib);color:var(--ifc)}
+.ic svg{width:28px;height:28px}
+.pc h3{font-size:20px;font-weight:700}
+.pc p{color:var(--muted);font-size:15px;line-height:1.6;margin-top:2px}
+.pc.soon{border-style:dashed}
 
-/* numbers */
-.nums{border-block:1px solid var(--line);background:var(--sheet)}
-.nums .wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
-.num{padding:22px 10px;text-align:center;border-inline-start:1px solid var(--line)}
-.num:first-child{border-inline-start:0}
-.num b{display:block;font-family:var(--f-display);font-size:clamp(30px,4vw,40px);font-weight:700;color:var(--teal);line-height:1.2;font-variant-numeric:tabular-nums}
-.num span{font-size:14px;color:var(--muted)}
-@media (max-width:700px){.nums .wrap{grid-template-columns:repeat(2,1fr)}.num{border-inline-start:0;border-top:1px solid var(--line)}.num:nth-child(-n+2){border-top:0}.num:nth-child(odd){border-inline-end:1px solid var(--line)}.num:last-child{grid-column:1/-1;border-inline-end:0}}
+/* section page */
+.back{display:inline-flex;align-items:center;gap:8px;font-size:18px;color:var(--teal);font-weight:700;text-decoration:none;margin-bottom:10px;padding:4px 0}
+.ph{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.ph h1{font-family:var(--f-display);font-weight:700;font-size:clamp(30px,4vw,42px);color:var(--fc,var(--ink));line-height:1.3}
+.ph p{color:var(--muted);font-size:17px;max-width:75ch;margin-top:4px}
+.ph-act{display:flex;gap:8px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--line);margin:22px 0 22px;overflow-x:auto}
+.tab{font-size:18px;padding:11px 24px;border-radius:12px 12px 0 0;color:var(--muted);background:none;border:2px solid transparent;border-bottom:0;margin-bottom:-2px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--sheet);color:var(--fc,var(--teal));font-weight:700;border-color:var(--line);border-bottom:2px solid var(--sheet)}
+.panel{min-width:0}
 
-section.block{padding-block:clamp(44px,7vw,80px)}
-.sec-k{font-size:14px;color:var(--sage);font-weight:500}
-.sec-t{font-family:var(--f-display);font-weight:700;font-size:clamp(30px,4.5vw,42px);margin-top:4px}
-.sec-t::after{content:"";display:block;width:56px;height:3px;border-radius:3px;background:var(--rose);margin-top:12px}
-.chapters{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:30px}
-.ch{display:flex;flex-direction:column;gap:6px;background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 20px;text-decoration:none;transition:border-color .2s,transform .2s}
-.ch:hover{border-color:var(--teal);transform:translateY(-2px)}
-.ch .i{display:grid;place-items:center;width:34px;height:34px;border:1.5px solid var(--rose);color:var(--rose);border-radius:9px;font-variant-numeric:tabular-nums;font-size:15px}
-.ch h3{font-size:18px;font-weight:700;margin-top:6px}
-.ch p{font-size:14px;color:var(--muted);line-height:1.7}
-.ch .tag{align-self:flex-start;font-size:12px;border-radius:999px;padding:1px 10px;background:var(--teal-soft);color:var(--teal);margin-top:auto}
-.ch .tag.soon{background:var(--paper);color:var(--muted)}
+.tools{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.search{flex:1 1 260px;min-width:0;font-size:17px;border:1.5px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:12px;padding:12px 16px}
+.btn{font-weight:700;font-size:17px;background:var(--fc,var(--teal));color:var(--sheet);border:0;border-radius:12px;padding:12px 24px;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:var(--sheet);color:var(--ink);border:1.5px solid var(--line)}
+.login-hint{align-self:center;font-size:15px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{font-size:15px;border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:6px 16px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fc,var(--teal));border-color:var(--fc,var(--teal));color:var(--sheet)}
+.chip span{opacity:.75;margin-inline-start:6px;font-variant-numeric:tabular-nums}
 
-.regband{background:var(--teal);color:var(--sheet)}
-.regband .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center;padding-block:clamp(36px,6vw,60px)}
-@media (max-width:700px){.regband .wrap{grid-template-columns:1fr}}
-.regband h2{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4vw,38px)}
-.regband p{opacity:.9;margin-top:8px;max-width:52ch}
-.regband .btn.main{background:var(--sheet);color:var(--teal)}
-.live{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;background:rgba(255,255,255,.12);border-radius:999px;padding:4px 14px}
-.live i{width:8px;height:8px;border-radius:50%;background:#7fe0a6;box-shadow:0 0 0 3px rgba(127,224,166,.25)}
+.tw{overflow-x:auto;border:1.5px solid var(--line);border-radius:14px;background:var(--sheet)}
+table.t{width:100%;border-collapse:collapse;font-size:17px;min-width:560px}
+.t th{background:var(--fs,var(--teal-soft));color:var(--fc,var(--teal));font-weight:700;text-align:start;padding:12px 14px;font-size:15px;white-space:nowrap}
+.t td{padding:12px 14px;border-top:1px solid var(--line);vertical-align:top}
+.t td.c{white-space:nowrap;font-variant-numeric:tabular-nums}
+.t td.num{color:var(--muted);width:2.5em;font-variant-numeric:tabular-nums}
+.t td.nm{min-width:11em}
+.t tr.tot td{font-weight:700;background:var(--fs,var(--teal-soft))}
+.tg{display:inline-block;font-size:13px;font-weight:700;border-radius:999px;padding:2px 12px;white-space:nowrap}
+.tg.none{background:var(--rose-soft);color:var(--rose)}.tg.med{background:var(--teal-soft);color:var(--teal)}.tg.wr{background:var(--sage-soft);color:var(--sage)}
+.tg.n1{background:var(--teal-soft);color:var(--teal)}.tg.n2{background:var(--navy-soft);color:var(--navy)}.tg.n3{background:var(--rose-soft);color:var(--rose)}.tg.call,.tg.pledge{background:var(--rose);color:var(--sheet)}
+.ra{display:flex;gap:6px;justify-content:flex-end;white-space:nowrap}
+.ra button{font-size:14px;border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:3px 12px;cursor:pointer}
+.ra .danger{border-color:var(--rose);color:var(--rose)}
+.unsure{border-bottom:1.5px dotted var(--rose)}
+.flag{color:var(--rose);font-weight:700}
+.empty{border:1.5px dashed var(--line);border-radius:14px;padding:26px;text-align:center;color:var(--muted);font-size:17px;line-height:1.9;background:var(--sheet)}
+.note{font-size:14px;color:var(--muted);margin-top:10px}
+.err{color:var(--rose);font-size:15px;margin:6px 0}
 
-.quote{text-align:center;padding-block:clamp(56px,9vw,100px)}
-.quote p{font-family:var(--f-display);font-size:clamp(28px,5vw,44px);line-height:1.6;font-weight:600}
-.quote small{display:block;margin-top:14px;color:var(--muted);font-size:15px}
-footer{border-top:1px solid var(--line);padding-block:22px calc(22px + env(safe-area-inset-bottom,0px));font-size:13px;color:var(--muted)}
-footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.block{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:18px}
+.block-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 18px;background:var(--paper);border-bottom:1px solid var(--line)}
+.block-h h3{font-size:18px;font-weight:700}
+.block-h span{font-size:14px;color:var(--muted)}
+.block .tw{border:0;border-radius:0}
+.block-f{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 18px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.orig{font-size:14px;background:none;border:0;color:var(--rose);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+.cols2{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:18px;align-items:start}
+.cols2 .block{margin-bottom:0}
+
+.minis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.mini{border:1.5px solid var(--line);border-radius:14px;padding:12px 16px;background:var(--sheet)}
+.mini b{display:block;font-family:var(--f-display);font-size:30px;color:var(--fc,var(--teal));line-height:1.3;font-variant-numeric:tabular-nums}
+.mini span{font-size:14px;color:var(--muted)}
+
+.chart{border:1.5px solid var(--line);border-radius:14px;background:var(--sheet);padding:14px 10px 6px;overflow-x:auto}
+.chart svg{display:block;width:100%;height:auto;min-width:560px;max-width:980px;margin-inline:auto}
+.chart .bar{fill:var(--fc,var(--teal))}.chart .bar.hi{fill:var(--rose)}
+.chart text{fill:var(--muted);font-family:var(--f-body);font-size:13px}
+.chart .val{fill:var(--ink);font-weight:700;font-size:14px}
+.chart .grid{stroke:var(--line)}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:18px;align-items:start}
+@media (max-width:900px){.about{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--sheet);border:1.5px solid var(--line);border-radius:18px;padding:24px 26px}
+.card h2{font-family:var(--f-display);font-size:24px;font-weight:700;color:var(--teal);margin-bottom:10px}
+.card .prose{display:flex;flex-direction:column;gap:10px;font-size:18px}
+.idcard{background:radial-gradient(90% 60% at 100% 0%,var(--rose-soft),transparent 60%),radial-gradient(80% 60% at 0% 100%,var(--sage-soft),transparent 65%),var(--sheet)}
+.idcard .nm{font-family:var(--f-display);font-weight:700;font-size:clamp(32px,4vw,44px);color:var(--rose);line-height:1.3}
+.idcard .rl{font-size:19px;margin-top:4px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.facts div{font-size:14px;color:var(--muted)}.facts b{display:block;color:var(--ink);font-size:17px;font-weight:500}
+.verse{text-align:center}
+.verse .b{font-family:var(--f-verse);font-weight:700;font-size:30px;color:var(--rose)}
+.verse .v{font-family:var(--f-verse);font-size:22px;line-height:2.1;margin-top:8px}
+.verse .s{font-size:14px;color:var(--muted)}
+.vm{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.vm div{background:var(--paper);border-radius:12px;padding:14px 18px}
+.vm h3{font-size:15px;color:var(--sage);font-weight:700}
+.vm p{font-size:17px;margin-top:4px}
+.values{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.values span{background:var(--sage-soft);color:var(--sage);border-radius:999px;padding:3px 14px;font-size:15px}
+.quote{font-family:var(--f-display);font-size:28px;line-height:1.7;text-align:center;font-weight:600}
+.sign{font-family:var(--f-display);font-size:22px;color:var(--rose);margin-top:12px}
+.stack{display:flex;flex-direction:column;gap:18px}
+
+/* reports */
+.reps{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:18px;align-items:start}
+.rep{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+.rep-h{background:var(--teal-soft);padding:14px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rep-h h3{font-size:19px;color:var(--teal);font-weight:700;line-height:1.5}
+.rep-h .d{font-size:14px;color:var(--teal);white-space:nowrap;font-variant-numeric:tabular-nums}
+.rep-b{padding:14px 18px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:15px}
+.rep-b dt{color:var(--muted)}.rep-b dd{margin:0;font-weight:500}
+.rep-g{padding:0 18px 12px}
+.rep-g h4{font-size:14px;color:var(--sage)}
+.rep-g ul{margin:4px 0 0;padding-inline-start:20px;font-size:15px;line-height:1.8}
+.rep-e{padding:0 18px 16px;display:flex;flex-direction:column;gap:8px}
+.ev{display:block;width:100%;padding:0;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper);cursor:zoom-in}
+.ev img{display:block;width:100%;height:auto}
+.ev-none{border:1.5px dashed var(--line);border-radius:12px;padding:14px;text-align:center;color:var(--muted);font-size:14px}
+.jtag{font-size:12px;background:var(--sheet);color:var(--teal);border-radius:999px;padding:1px 10px;margin-inline-start:12px;vertical-align:middle;display:inline-block;line-height:1.8}
+
+/* certificates */
+.certs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:18px;align-items:start}
+.cert{margin:0;background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;padding:14px}
+.cert figcaption{font-size:15px;color:var(--muted);margin-top:10px;line-height:1.7}
+.cert figcaption b{color:var(--ink)}
+.sec-t{font-weight:700;font-size:20px;margin:6px 0 12px}
+.sec-t+.certs{margin-bottom:26px}
+
+/* schedules */
+.sched td,.sched th{text-align:center!important;white-space:nowrap}
+.sched td:first-child,.sched th:first-child{text-align:start!important}
+.sched .me{background:var(--rose-soft);color:var(--rose);font-weight:700;border-radius:6px;padding:2px 8px}
+.sched .all{color:var(--muted)}
+
+/* weeks */
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,480px),1fr));gap:12px;align-items:start}
+.wk{background:var(--sheet);border:1.5px solid var(--line);border-radius:14px;overflow:hidden}
+.wk summary{cursor:pointer;padding:14px 18px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;list-style:none}
+.wk summary::-webkit-details-marker{display:none}
+.wk summary b{font-weight:700}
+.wk summary span{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.wk .tw{border:0;border-radius:0;border-top:1px solid var(--line)}
+
+/* dialog (forms + chooser) */
+.dlg{position:fixed;inset:0;z-index:40;background:rgba(20,14,16,.5);display:flex;align-items:center;justify-content:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.dlg-card{background:var(--sheet);border-radius:18px;padding:24px;width:min(560px,100%);max-height:100%;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.35);border-top:8px solid var(--fc,var(--teal))}
+.dlg-card h2{font-family:var(--f-display);font-size:26px;font-weight:700;margin-bottom:12px}
+.ff{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.ff>*{grid-column:1/-1;min-width:0}
+.ff>.half{grid-column:auto}
+.ff label,.ff legend{font-size:14px;color:var(--muted);display:block;margin-top:6px}
+.ff input:not([type=radio]):not([type=checkbox]),.ff select{font:inherit;font-size:17px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:10px 12px;width:100%}
+.ff fieldset{border:0;padding:0;margin:0}
+.radios{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.radios label{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;color:var(--ink);font-size:15px;margin:0;cursor:pointer}
+.radios label:has(input:checked){border-color:var(--fc,var(--teal));background:var(--fs,var(--teal-soft));color:var(--fc,var(--teal));font-weight:700}
+.chk{display:flex!important;align-items:center;gap:8px;font-size:16px!important;color:var(--ink)!important;margin-top:30px!important}
+.chk input{width:20px;height:20px}
+.eg{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:6px 8px;align-items:center;margin-top:4px}
+.eg b{font-size:13px;color:var(--muted);font-weight:500;text-align:center}
+.eg span{font-size:15px;white-space:nowrap}
+.eg input{text-align:center;padding:8px!important}
+.dlg-act{display:flex;gap:10px;margin-top:16px}
+@media (max-width:480px){.ff{grid-template-columns:1fr}.ff>.half{grid-column:1/-1}.chk{margin-top:8px!important}}
+.choose{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.choose{grid-template-columns:1fr}}
+.choose button{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:start;background:var(--sheet);border:1.5px solid var(--line);border-top:6px solid var(--c);border-radius:14px;padding:16px 18px;cursor:pointer}
+.choose button:hover{background:var(--paper)}
+.choose b{font-size:18px;color:var(--c)}
+.choose span{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:60;background:rgba(20,14,16,.9);display:flex;align-items:center;justify-content:center;
+  padding:calc(60px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;background:#fff}
+.lb-x{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));inset-inline-start:calc(12px + env(safe-area-inset-left,0px));font-size:16px;background:#fff;color:#2B2224;border:0;border-radius:999px;padding:8px 20px;cursor:pointer}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="#top">تركية الزهراني</a>
-    <div class="top-act">
-      <button class="pill" id="themeBtn" type="button">داكن</button>
-      <span data-auth-slot></span>
-    </div>
-  </div>
-</header>
-
-<main id="top">
-  <section class="hero">
-    <div class="wrap">
-      <div>
-        <span class="eyebrow">ملف الأهداف والجدارات · 1447 – 1448هـ</span>
-        <h1>تركية يحيى<span>الزهراني</span></h1>
-        <p class="role"><b>مساعد إداري ممارس ثاني</b> في المتوسطة الخامسة، الإدارة العامة للتعليم بمحافظة جدة. ملف يجمع التقارير والشواهد والإحصائيات وسجل أعذار الطالبات.</p>
-        <div class="cta">
-          <a class="btn main" href="file.html">تصفّح الملف
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
-          <a class="btn line" href="file.html#goals">أهداف ميثاق الأداء</a>
-        </div>
-      </div>
-      <a class="stack" href="file.html" aria-label="افتح الملف">
-        <span class="sh s3"></span><span class="sh s2"></span>
-        <span class="sh s1">
-          <span class="k">وزارة التعليم<br>الإدارة العامة للتعليم بمحافظة جدة<br>المتوسطة الخامسة</span>
-          <span><span class="t">ملف الأهداف والجدارات</span><br><span class="n">تركية يحيى الزهراني</span><br><span class="r">مساعد إداري</span></span>
-          <span class="f"><span>إعداد<b>تركية الزهراني</b></span><span>مديرة المدرسة<b>مستورة العتيبي</b></span></span>
-        </span>
-      </a>
-    </div>
-  </section>
-
-  <div class="nums" aria-label="الملف بالأرقام">
-    <div class="wrap">
-      <div class="num"><b>14</b><span>تقريرًا بالشواهد</span></div>
-      <div class="num"><b>8</b><span>تقارير إحصائية للغياب</span></div>
-      <div class="num"><b>4</b><span>جدارات بالميثاق</span></div>
-      <div class="num"><b>2</b><span>شهادتا شكر وتقدير</span></div>
-      <div class="num"><b>1</b><span>دورة تدريبية</span></div>
-    </div>
-  </div>
-
-  <section class="block">
-    <div class="wrap">
-      <div class="sec-k">المحتوى</div>
-      <h2 class="sec-t">أقسام الملف</h2>
-      <div class="chapters">
-        <a class="ch" href="file.html#intro"><span class="i">1</span><h3>المقدمة</h3><p>كلمة افتتاحية للملف ولمن يقرؤه.</p></a>
-        <a class="ch" href="file.html#purpose"><span class="i">2</span><h3>الهدف من ملف الإنجاز</h3><p>لماذا هذا الملف وكيف يحفظ الأعمال.</p></a>
-        <a class="ch" href="file.html#vision"><span class="i">3</span><h3>الرؤية والرسالة</h3><p>الرؤية والرسالة الشخصية، ورؤية الوزارة وقيمها.</p></a>
-        <a class="ch" href="file.html#assignment"><span class="i">4</span><h3>التكليف الإداري</h3><p>قرار التكليف بالمهام الإدارية.</p><span class="tag soon">يُضاف قريبًا</span></a>
-        <a class="ch" href="file.html#goals"><span class="i">5</span><h3>أهداف ميثاق الأداء الوظيفي</h3><p>الأهداف والجدارات، و14 تقريرًا مربوطة بها.</p><span class="tag">14 تقريرًا</span></a>
-        <a class="ch" href="file.html#stats"><span class="i">◆</span><h3>إحصائيات الغياب الأسبوعية</h3><p>7 أسابيع من الحضور والغياب مع رسم بياني.</p><span class="tag">7 أسابيع</span></a>
-        <a class="ch" href="file.html#competencies"><span class="i">◆</span><h3>الجدارات</h3><p>استمارات حصر الغياب وجداول الإشراف الأسبوعي.</p></a>
-        <a class="ch" href="file.html#training"><span class="i">6</span><h3>الدورات التدريبية</h3><p>تطوير الإجراءات والنماذج الإدارية · معهد الإدارة العامة.</p><span class="tag">1 شهادة</span></a>
-        <a class="ch" href="file.html#volunteer"><span class="i">7</span><h3>شهادات التطوع</h3><p>المشاركات التطوعية.</p><span class="tag soon">يُضاف قريبًا</span></a>
-        <a class="ch" href="file.html#thanks"><span class="i">8</span><h3>شهادات الشكر</h3><p>شكر وتقدير من إدارة المدرسة.</p><span class="tag">2 شهادة</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="regband">
-    <div class="wrap">
-      <div>
-        <h2>ملفات المتابعة</h2>
-        <p>أربعة ملفات تُحدَّث أولًا بأول: سجل أعذار الطالبات، وإشعارات غياب الطالبات، وتحويلات كثيرات الغياب، وإحصائية الحضور والغياب. الأسماء مرتبة أبجديًا.</p>
-        <span class="live" id="liveCount" hidden><i></i><span></span></span>
-      </div>
-      <a class="btn main" href="file.html#excuses">فتح الملفات</a>
-    </div>
-  </section>
-
-  <section class="quote">
-    <div class="wrap">
-      <p>قلوبنا تحمل قيمًا<br>نغرسها لتبقى أثرًا</p>
-      <small>تركية يحيى الزهراني</small>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap"><span>المتوسطة الخامسة · الإدارة العامة للتعليم بمحافظة جدة</span><span>العام الدراسي 1447 – 1448هـ</span></div>
-</footer>
-
+<header class="top"><div class="top-in">
+  <a class="brand" href="#">تركية الزهراني<small>ملف الأهداف والجدارات</small></a>
+  <div class="top-act"><a class="pill home-pill" href="#">الرئيسية</a><button class="pill" id="themeBtn" type="button">داكن</button><span data-auth-slot></span></div>
+</div></header>
+<main class="main" id="app" tabindex="-1"></main>
+<div class="dlg" id="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="dlgT"><div class="dlg-card" id="dlgCard"></div></div>
+<datalist id="nameList"></datalist><datalist id="clsList"></datalist>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="عرض الصورة"><button class="lb-x" id="lbX">إغلاق</button><img id="lbImg" alt=""></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script>
+const REPORTS=[
+ {c:"المبادرة",t:"انضباط الخروج من الفصل",d:"10/1/1447هـ",by:"تركية الزهراني",place:"المدرسة",who:"الطالبات",n:"90",
+  g:["تقليل الخروج المتكرر وغير الضروري أثناء الحصة","منع التكدس أو تجوّل عدد كبير من الطالبات خارج الفصول في الوقت نفسه"],ev:"ev_khuruj",pg:"pg_khuruj"},
+ {c:"المرونة للتغيير",t:"حصر غياب يوم الخميس",d:"10/8/1447هـ",by:"تركية الزهراني",place:"عن بُعد",who:"الطالبات",n:"308",
+  g:["معرفة عدد غياب الطالبات يوم الخميس","التواصل مع من تحمل كلمة المرور للدخول وإتمام عملية الحصر لـ 10 فصول"],ev:"ev_khamis",pg:"pg_khamis"},
+ {c:"العمل الجماعي",t:"يوم التأسيس",d:"29/8/1447هـ",by:"تركية الزهراني",place:"المدرسة",who:"المجتمع المدرسي",n:"1000",
+  g:["تعزيز الوعي بالجذور التاريخية والثقافية للمملكة","تكريم إرث الأجداد وما قدموه من بناء ووحدة واستقرار"],ev:"ev_tasees",pg:"pg_tasees"},
+ {c:"المسؤولية",t:"متابعة الفصول",d:"13/10/1447هـ",by:"تركية الزهراني",place:"المدرسة",who:"الطالبات",n:"90",
+  g:["متابعة نظافة الفصول","التعاون حتى نصل لدرجة عالية من الارتقاء"],ev:"ev_mutaba",pg:"pg_mutaba"},
+ {c:"العمل الجماعي",t:"نافس · برنامج الفطور المجاني",d:"20/10/1447هـ",by:"تركية الزهراني وزميلاتها",place:"المدرسة",who:"طالبات الصف الثالث",n:"300",
+  g:["تحسين تركيز الطالبات من خلال برنامج الفطور المجاني","دعم تحصيل الطالبات"],ev:"ev_nafis",pg:"pg_nafis"},
+ {c:"المبادرة",t:"تكريم الفصل منضبط الحضور",d:"16/11/1447هـ",by:"تركية الزهراني",place:"المدرسة",who:"الطالبات",n:"90",
+  g:["تعزيز قيمة الانضباط والالتزام","تشجيع الطالبات على الانتظام","رفع الدافعية والتحفيز"],ev:"ev_takreem",pg:"pg_takreem"},
+ {c:"المبادرة",t:"زيارة مختبرات دلتا الطبية",d:"23/11/1447هـ",by:"تركية الزهراني",place:"مختبرات دلتا",who:"الطالبات",n:"14",
+  g:["التعرف على دور المختبرات الطبية","الاطلاع على كيفية إجراء التحاليل","التعرف على الأجهزة والتقنيات"],ev:"ev_delta",pg:"pg_delta"},
+ {c:"العمل الجماعي",t:"منتج للمعرفة",d:"25/11/1447هـ",by:"تركية الزهراني وزميلاتها",place:"المدرسة",who:"الطالبات",n:"910",
+  g:["تنمية حب التعلم والبحث عن المعرفة","اكتشاف المواهب والقدرات","تعزيز روح التعاون"],ev:"ev_muntaj",pg:"pg_muntaj"},
+ {c:"المبادرة",t:"إذاعة عن الانضباط",d:"26/11/1447هـ",by:"تركية الزهراني",place:"المدرسة",who:"الطالبات",n:"900",
+  g:["نشر ثقافة الانضباط","تعزيز احترام الوقت والحضور المبكر"],ev:"ev_ithaa",pg:"pg_ithaa"},
+ {c:"المسؤولية",t:"انضباط الفصول أثناء التقييم الداخلي",d:"22/12/1447هـ",by:"تركية الزهراني",place:"ممر فصول ثاني متوسط",who:"الطالبات",n:"6 فصول",
+  g:["انضباط الطالبات بشكل ملحوظ","تسهيل عملية مرور التقييم الداخلي أثناء الحصص"],ev:null,pg:"pg_taqyeem"},
+ {c:"المسؤولية",t:"استلام وفرز أوراق الاختبارات",d:"2/1/1448هـ",by:"تركية الزهراني",place:"المتوسطة الخامسة",who:"الطالبات",n:"308",
+  g:["إعداد أرقام الجلوس للطالبات","تجهيز قوائم أسماء الطالبات وتوزيعهن على اللجان","إعداد أرقام اللجان وتنظيمها","تجهيز كشوف التوقيع الخاصة بالحضور والاستلام","تنظيم عملية استلام وتسليم أوراق الاختبارات","المساهمة في ضمان سير الاختبارات بسلاسة ودقة وفق الإجراءات"],ev:"ev_istilam",pg:"pg_istilam"},
+ {c:"المسؤولية",t:"أول يوم اختبار للفصل الدراسي الثاني",d:"6/1/1448هـ",by:"تركية الزهراني",place:"المتوسطة الخامسة",who:"الطالبات",n:"90",
+  g:["قياس مدى تحقق نواتج التعلم","تحديد نقاط القوة والجوانب التي تحتاج إلى تحسين","تعزيز الجدية والانضباط في العملية التعليمية"],ev:"ev_ikhtibar",pg:"pg_ikhtibar"},
+ {c:"العمل الجماعي",t:"مشاركة اليوم الوطني",d:"6/4/1448هـ",by:"تركية الزهراني",place:"المتوسطة الخامسة",who:"الطالبات",n:"106",
+  g:["إظهار الحب والولاء للمليك والوطن","تجديد وتعزيز الحب والانتماء للمملكة العربية السعودية ومليكها"],ev:"ev_watani",pg:"pg_watani"},
+ {c:"المرونة للتغيير",t:"تحفيز الانضباط عن بُعد",d:"23/5/1448هـ",by:"تركية الزهراني",place:"برامج التواصل",who:"الطالبات وأولياء الأمور",n:"970",
+  g:["حث أهالي الطالبات على حضور بناتهن عبر منصة مدرستي حتى نحقق الهدف"],ev:"ev_tahfeez",pg:"pg_tahfeez"},
+];
+const U="؟"; // marks a handwritten name that needs checking
+const FORMS=[
+ {t:"شهر ذي القعدة · من 1/11 إلى 6/11/1447هـ",img:"form_b",excuse:true,
+  rows:[["أسيل عثمان عبيد الزهراني","2/9",4],["العنود أبو طالب قيسي","2/9",3],["هتون علي مبروك سويدي","2/9",3],["ياسمين عبدالرحيم عبدالعليم","2/9",3],
+        ["تالة فايز فلاح المطيري","2/9",3],["تالية خليفة السلمي","2/9",3],["كناز بندر عويض الزهراني","2/7",3],["لمار عبدالرحيم مكي","2/5",5]],
+  foot:"المراقبات: تركية الزهراني، وفاء المالكي، هند المطيري",
+  note:"تقوم المراقبة بحصر عدد الطالبات اللاتي تغيّبن 3 أيام فأكثر خلال الشهر، وتسلّم الاستمارة للمرشدة الطلابية لدراسة أسباب الغياب. وتبحث المرشدة أسباب تكرار الغياب، سواء بمواعيد محددة أو منتظمة بسبب مادة معينة أو موعد الدورة الشهرية، ومعالجة المسببات."},
+ {t:"13/11/1447هـ",img:"form_c",
+  rows:[["لمار عبدالرحيم مكي","2/5",5],["ألما بندر المطيري","2/6",4],["تالة فايز المطيري","2/9",4],["هتون علي سويدي","2/9",5],["يارا مازن عبدالرحيم"+U,"2/7",5],["أوجين فوزي الجهني"+U,"2/8",3]],
+  foot:"المراقبات: وفاء المالكي، تركية الزهراني · وكيلة الشؤون الطلابية: صيتة سويلم"},
+ {t:"1447هـ",img:"form_a",
+  rows:[["أمل ماجد المعبدي","2/2",3],["وتين سلطان النمري","2/2",3],["فجر أحمد الغامدي","2/1",3],["وتين عبدالرحمن الحمدي","2/1",3],["ميار خالد حسين حربي"+U,"2/7",3],
+        ["نورة أحمد الشهري"+U,"2/4",4],["لمار عبدالرحيم مكي","2/5",5],["ألما بندر المطيري","2/6",12],["ترف نذير النفيعي","2/5",12]],
+  foot:"المراقبات: وفاء المالكي، تركية الزهراني، هند المطيري · وكيلة الشؤون الطلابية: صيتة سويلم"},
+];
+// بيانات تحويل الطالبات كثيرات الغياب (ثالث متوسط · الفصل الأول 1448هـ) — من الاستمارات الورقية
+const XF=[
+ {t:"الأسبوع الأول · ربيع الأول 1448هـ",img:"freq_w1",cls:"ثالث متوسط · الفصول 3/8، 3/9، 3/10",
+  rows:[["لوجين فوزي عثمان الجهني","3/8",5],["ذكرى سوعي محمد شبيلي"+U,"3/10",5],["نورة سوعي محمد شبيلي"+U,"3/10",5],["غزل محمد علي آل قاسم"+U,"3/10",5],["تالة فايز فلاح المطيري","3/9",5]]},
+ {t:"الأسبوع الثالث · ربيع الآخر 1448هـ",img:"freq_w3",cls:"ثالث متوسط",
+  rows:[["غزل محمد علي آل قاسم"+U,"3/10",3],["ذكرى سوعي محمد شبيلي"+U,"3/10",5,"تم التواصل مع والدتها ووعدت بالحضور"],["نورة سوعي محمد شبيلي"+U,"3/10",5,"تم التواصل مع والدتها ووعدت بالحضور"],["ميار مروان عاطر المالكي"+U,"3/10",5],["تالة فايز فلاح المطيري","3/9",4]]},
+ {t:"الأسبوع الخامس · ربيع الآخر 1448هـ",img:"freq_w5",cls:"ثالث متوسط",
+  rows:[["ألمى محمد موسى الزهراني"+U,"3/10",3],["ذكرى سوعي محمد شبيلي"+U,"3/10",4],["ريلام بندر عبدالعزيز بازهير"+U,"3/10",3],["غزل محمد علي آل قاسم"+U,"3/10",5],["عبير سعيد مرزوق البشري"+U,"3/10",5],["ميار مروان عاطر المالكي"+U,"3/10",4],["نورة سوعي محمد شبيلي"+U,"3/10",3],["هيام علي إبراهيم الريحان"+U,"3/10",4],["وئام عادل سعيد الحرازي"+U,"3/10",3],["روز بندر هليل المطيري"+U,"3/8",3],["تالة فايز فلاح المطيري","3/9",3],["تالين عبدالرحمن العتيبي"+U,"3/9",4],["جود مجاهد عبدالخالق الغامدي"+U,"3/9",4]]},
+ {t:"الأسبوع الثامن · من 7/5 إلى 11/5/1448هـ",img:"freq_w8",cls:"ثالث متوسط",
+  rows:[["أسيل عثمان عبيد الزهراني","3/9",5],["روز بندر هليل المطيري"+U,"3/8",3],["ريناد علي صالح الحلواني"+U,"3/8",3],["ياسمين عبدالرحيم يحيى"+U,"3/9",3],["غزل محمد علي آل قاسم"+U,"3/10",5],["ذكرى سوعي محمد شبيلي"+U,"3/10",4],["نورة سوعي محمد شبيلي"+U,"3/10",4]]},
+ {t:"الأسبوع الثامن · بيان إضافي",img:"freq_w8b",cls:"ثالث متوسط",
+  rows:[["ريلام بندر عبدالعزيز بازهير"+U,"3/10",3,"وفاة جدتها والدة الأب"]]},
+ {t:"الأسبوع التاسع · من 15/5 إلى 18/5/1448هـ",img:"freq_w9",cls:"ثالث متوسط",
+  rows:[["تالة فايز فلاح المطيري","3/9",4],["لوجين فوزي عثمان الجهني","3/8",4],["ذكرى سوعي محمد شبيلي"+U,"3/10",4],["نورة سوعي محمد شبيلي"+U,"3/10",4]]},
+];
+const DAYS=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس"];
+const PER=["الأولى","الثانية","الثالثة","الرابعة","الخامسة","السادسة","السابعة"];
+const J="الجميع",W="وفاء المالكي",H="هند المطيري",T="تركية الزهراني";
+const SCHEDS=[
+ {t:"جدول الإشراف الأسبوعي",sub:"اعتماد وكيلة الشؤون الطلابية فاطمة سعيد · 26/3/1448هـ",img:"sched_1",
+  d:[[J,W,H,J,T,W,H],[J,H,T,J,W,H,T],[J,T,W,J,H,T,W],[J,W,T,J,H,W,T],[J,H,W,J,T,H,W]]},
+ {t:"جدول الإشراف الأسبوعي",sub:"من 24/3/1448هـ إلى 28/3/1448هـ",img:"sched_2",
+  d:[[J,W,T,J,H,W,T],[J,H,W,J,T,H,W],[J,T,H,J,W,T,H],[J,W,T,J,H,W,T],[J,H,W,J,T,H,W]]},
+];
+const STATS=[
+ {w:"الثاني",from:"24/3",to:"28/3",img:"w2",r:[[308,1380,160,"11.69","88.31"],[315,1331,244,"15.49","84.51"],[348,1498,242,"13.91","86.09"]],t:[971,4209,646,"14.05","85.95"]},
+ {w:"الثالث",from:"2/4",to:"6/4",img:"w3",r:[[308,1012,528,"34.29","65.71"],[315,1114,461,"29.27","70.73"],[348,1175,565,"32.47","67.53"]],t:[971,3301,1554,"32.01","67.99"]},
+ {w:"الرابع",from:"9/4",to:"11/4",img:"w4",r:[[307,690,231,"25.08","74.92"],[319,697,260,"27.17","72.83"],[348,756,288,"27.59","72.41"]],t:[973,2143,779,"26.66","73.34"]},
+ {w:"الخامس",from:"16/4",to:"20/4",img:"w5",r:[[307,1230,305,"24.80","75.20"],[319,1259,336,"21.07","78.93"],[348,1262,478,"27.47","72.53"]],t:[973,3751,1119,"28.74","71.26"]},
+ {w:"السادس",from:"23/4",to:"27/4",img:"w6",r:[[307,1184,351,"22.87","77.13"],[319,1172,423,"26.52","73.48"],[348,1438,302,"17.36","82.64"]],t:[973,3794,1076,"22.09","77.91"]},
+ {w:"السابع",from:"30/4",to:"4/5",img:"w7",r:[[305,1344,181,"11.87","88.13"],[317,1414,171,"10.79","89.21"],[348,1490,250,"14.37","85.63"]],t:[970,4248,602,"12.41","87.59"]},
+ {w:"الثامن",from:"7/5",to:"11/5",img:"w8",r:[[305,1211,314,"20.58","79.42"],[317,1251,334,"21.05","78.95"],[348,1201,539,"30.98","69.02"]],t:[970,3663,1187,"24.47","75.53"]},
+];
+
+const JAD=[["المسؤولية","القدرة على تحمّل المسؤولية الفردية لتحقيق الأهداف بالجودة المطلوبة وفي الوقت المحدد",20],
+ ["العمل الجماعي","القدرة على العمل بشكل جماعي وبروح الفريق الواحد، والمحافظة على علاقات جيدة داخل الوحدة التنظيمية وخارجها من أجل تحقيق الأهداف المشتركة",25],
+ ["المرونة للتغيير","القدرة على التكيّف والعمل بشكل فعّال في مختلف الظروف، وفهم وجهات النظر المختلفة وقبول التغيير في متطلبات العمل",30],
+ ["المبادرة","القدرة على إظهار الحرص الكافي لتحقيق أهداف العمل، والرغبة في إنجاز مهام إضافية تخدم مصلحة العمل دون أن يُطالَب بذلك، وتقديم أفكار ومقترحات جديدة نابعة من الرغبة في التحسين والتطوير",25]];
+
+// ===== helpers =====
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const arKey=n=>String(n||"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي");
+const sortRows=rows=>[...rows].sort((a,b)=>arKey(a[0]).localeCompare(arKey(b[0]),"ar"));
+const nm=n=>n.endsWith(U)?`<span class="unsure" title="يحتاج تأكيد من الأصل">${esc(n.slice(0,-1))}</span>`:esc(n);
+const HM=["محرم","صفر","ربيع الأول","ربيع الآخر","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
+const GR=["أول متوسط","ثاني متوسط","ثالث متوسط"];
+const KINDS={none:"بدون عذر",med:"عذر طبي",wr:"عذر خطي"};
+const STAGES={n1:"إشعار أول",n2:"إشعار ثانٍ",n3:"إشعار ثالث",call:"استدعاء ولي الأمر",pledge:"أخذ تعهد"};
+const CHANNELS={sms:"رسالة نصية",noor:"نظام نور",phone:"اتصال هاتفي",paper:"خطاب ورقي"};
+const parseD=d=>{const m=String(d||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?{d:+m[1],m:+m[2],y:+m[3]}:null};
+const dNum=d=>{const x=parseD(d);return x?x.y*10000+x.m*100+x.d:0};
+const toLatin=v=>String(v==null?"":v).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d));
+const HP=(()=>{try{const p=new Intl.DateTimeFormat("en-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"numeric",year:"numeric"}).formatToParts(new Date());const g=t=>(p.find(x=>x.type===t)||{}).value;const o={d:+g("day"),m:+g("month"),y:parseInt(g("year"))};return o.y?o:null}catch(e){return null}})();
+const hijriToday=()=>HP?`${HP.d}/${HP.m}/${HP.y}`:"";
+const byName=rows=>[...rows].sort((a,b)=>arKey(a.name).localeCompare(arKey(b.name),"ar")||dNum(a.date)-dNum(b.date));
+const pct=(a,p)=>{const t=(+a||0)+(+p||0);return t?a/t*100:0};
+const f2=n=>(Math.round(n*100)/100).toFixed(2);
+const ICON={
+ user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+ target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
+ camera:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+ clip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 11h6M9 15h4"/></svg>',
+ medal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="12" cy="15" r="5"/><path d="M8 3l3 7M16 3l-3 7M8 3h8"/></svg>',
+ doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>',
+};
+
+// ===== live data =====
+const DB={};["absences","notices","frequent","weekly_stats"].forEach(t=>DB[t]={state:"loading",rows:[]});
+let canWrite=false;
+const ready=t=>DB[t].state==="ready";
+const STATIC_WEEKS=STATS.map(x=>({id:null,week:x.w,from_d:x.from+"/1448",to_d:x.to+"/1448",g:x.r.map(r=>({t:r[0],p:r[1],a:r[2],ap:+r[3]})),tot:{t:x.t[0],p:x.t[1],a:x.t[2],ap:+x.t[3]},img:x.img}));
+function dbWeek(r){const g=[1,2,3].map(i=>({t:+r["g"+i+"_total"],p:+r["g"+i+"_present"],a:+r["g"+i+"_absent"]}));g.forEach(x=>x.ap=pct(x.a,x.p));
+  const P=g.reduce((s,x)=>s+x.p,0),A=g.reduce((s,x)=>s+x.a,0),T=g.reduce((s,x)=>s+x.t,0);return {id:r.id,week:r.week,from_d:r.from_d,to_d:r.to_d,g,tot:{t:T,p:P,a:A,ap:pct(A,P)},note:r.note}}
+const allWeeks=()=>[...STATIC_WEEKS,...DB.weekly_stats.rows.map(dbWeek)].sort((a,b)=>dNum(a.from_d)-dNum(b.from_d));
+
+// ===== record sections =====
+const REC={
+ excuses:{title:"سجل أعذار الطالبات",short:"سجل الأعذار",fc:"var(--teal)",fs:"var(--teal-soft)",table:"absences",goal:1,add:"تسجيل غياب",cover:"cover_kashf1448",
+  desc:"توثيق غياب الطالبات وأعذارهن الطبية والخطية · شاهد الهدف الأول",
+  choose:"غياب طالبة، بعذر أو بدون",
+  fields:[{k:"name",t:"name",l:"اسم الطالبة"},{k:"cls",t:"cls",l:"الفصل (الصف/رقم الفصل)",half:1},{k:"days",t:"int",l:"عدد الأيام",min:1,max:60,def:1,half:1},
+   {k:"date",t:"date",l:"تاريخ الغياب (هجري)"},{k:"kind",t:"radio",l:"نوع الغياب",opts:KINDS,def:"none"},{k:"note",t:"text",l:"ملاحظة",opt:1,ph:"الجهة الطبية أو سبب الغياب"}]},
+ notices:{title:"إشعارات غياب الطالبات",short:"إشعارات الغياب",fc:"var(--rose)",fs:"var(--rose-soft)",table:"notices",goal:2,add:"تسجيل إشعار",cover:"cover_notices",
+  desc:"توثيق تواصل المدرسة مع أولياء الأمور بشأن غياب بناتهم · شاهد الهدف الثاني",
+  choose:"إشعار أو استدعاء ولي أمر",
+  fields:[{k:"name",t:"name",l:"اسم الطالبة"},{k:"cls",t:"cls",l:"الفصل (الصف/رقم الفصل)",half:1},{k:"days",t:"int",l:"أيام الغياب حتى الآن",min:1,max:90,def:3,half:1},
+   {k:"date",t:"date",l:"تاريخ الإشعار (هجري)"},{k:"stage",t:"radio",l:"نوع الإشعار",opts:STAGES,def:"n1"},{k:"channel",t:"radio",l:"وسيلة الإشعار",opts:CHANNELS,def:"sms"},
+   {k:"response",t:"text",l:"رد ولي الأمر أو ملاحظة",opt:1,ph:"مثال: تم التواصل ووعد بالمتابعة"}]},
+ frequent:{title:"تحويلات كثيرات الغياب",short:"تحويلات كثيرات الغياب",fc:"var(--sage)",fs:"var(--sage-soft)",table:"frequent",goal:3,add:"إضافة طالبة للحصر",cover:"cover_frequent",
+  desc:"حصر الطالبات اللاتي تغيّبن 3 أيام فأكثر وتحويلهن للمرشدة الطلابية · شاهد الهدف الثالث",
+  choose:"طالبة غيابها 3 أيام فأكثر في الشهر",
+  fields:[{k:"name",t:"name",l:"اسم الطالبة"},{k:"cls",t:"cls",l:"الفصل (الصف/رقم الفصل)",half:1},{k:"days",t:"int",l:"أيام الغياب في الشهر",min:1,max:31,def:3,half:1},
+   {k:"month",t:"month",l:"الشهر",half:1},{k:"year",t:"int",l:"السنة (هجري)",min:1440,max:1500,def:HP?HP.y:1448,half:1},
+   {k:"excused",t:"int",l:"منها بعذر",min:0,max:31,def:0,half:1},{k:"referred",t:"bool",l:"حُوّلت للمرشدة الطلابية",def:true,half:1},
+   {k:"note",t:"text",l:"الإجراء المتخذ أو ملاحظة",opt:1,ph:"مثال: تم التواصل مع والدتها"}]},
+ stats:{title:"إحصائية الحضور والغياب",short:"إحصائية الحضور والغياب",fc:"var(--navy)",fs:"var(--navy-soft)",table:"weekly_stats",goal:4,add:"إضافة أسبوع",cover:"cover_stats",
+  desc:"الإحصائية الأسبوعية لحضور الطالبات وغيابهن في الصفوف الثلاثة · شاهد الهدف الرابع",
+  choose:"أرقام الحضور والغياب لأسبوع جديد",
+  fields:[{k:"week",t:"text",l:"الأسبوع",ph:"مثال: التاسع",half:1},{k:"note",t:"text",l:"ملاحظة",opt:1,half:1},
+   {k:"from_d",t:"date",l:"من تاريخ (هجري)",half:1},{k:"to_d",t:"date",l:"إلى تاريخ (هجري)",half:1},{k:"grid",t:"grid",l:"الأعداد لكل صف"}]},
+};
+const UI={tab:{},filter:"all",q:"",confirm:null,err:null,rfilter:"الكل"};
+
+function status(t){const st=DB[t].state;
+  if(st==="loading")return `<p class="note">جارٍ التحميل…</p>`;
+  if(st==="slow")return `<div class="empty">تعذّر الوصول إلى البيانات الآن. جرّبي بعد قليل.</div>`;
+  if(st==="off")return `<div class="empty">قاعدة البيانات غير مربوطة.</div>`;
+  if(st==="missing")return `<div class="empty">جدول هذا السجل غير موجود في قاعدة البيانات. شغّلي ملف الإعداد (SQL) في Supabase.</div>`;
+  return ""}
+function table(rows,cols,acts){
+  return `<div class="tw"><table class="t"><thead><tr><th>م</th>${cols.map(c=>`<th>${c[0]}</th>`).join("")}${acts?"<th></th>":""}</tr></thead><tbody>${
+    rows.map((r,i)=>`<tr><td class="num">${i+1}</td>${cols.map(c=>`<td${c[2]?` class="${c[2]}"`:""}>${c[1](r)}</td>`).join("")}${acts?`<td>${rowActs(r)}</td>`:""}</tr>`).join("")}</tbody></table></div>`}
+function rowActs(r){if(!r.id)return "";return `<div class="ra">${UI.confirm===r.id?`<button class="danger" data-act="delyes" data-id="${esc(r.id)}">تأكيد الحذف</button><button data-act="delno">تراجع</button>`
+  :`<button data-act="edit" data-id="${esc(r.id)}">تعديل</button><button class="danger" data-act="del" data-id="${esc(r.id)}">حذف</button>`}</div>`}
+function tools(key,search=true){const R=REC[key];
+  const add=canWrite&&ready(R.table)?`<button class="btn" data-act="add" data-rec="${key}">＋ ${R.add}</button>`:(ready(R.table)?`<span class="login-hint">للإضافة: سجّلي الدخول</span>`:"");
+  return `<div class="tools">${search?`<input class="search" id="q" type="search" placeholder="ابحثي باسم الطالبة أو الفصل" value="${esc(UI.q)}" aria-label="بحث">`:"<span style='flex:1'></span>"}${add}</div>${UI.err?`<p class="err">${esc(UI.err)}</p>`:""}`}
+const qMatch=r=>{const q=arKey(UI.q.trim());return !q||arKey(r.name).includes(q)||String(r.cls||"").includes(q)};
+function chips(list){return `<div class="chips">${list.map(([k,l,n])=>`<button class="chip" data-act="filter" data-k="${k}" aria-pressed="${UI.filter===k}">${l}<span>${n}</span></button>`).join("")}</div>`}
+const tagK=(cls,t)=>`<span class="tg ${cls}">${esc(t)}</span>`;
+const paperBlock=(title,sub,img,inner,foot)=>`<div class="block"><div class="block-h"><h3>${title}</h3><span>${sub||""}</span></div>${inner}<div class="block-f"><span>${foot||""}</span>${img?`<button class="orig" data-full="img/${img}.jpg">عرض الأصل</button>`:""}</div></div>`;
+
+function weekChart(W){if(!W.length)return "";
+  const n=W.length,Wd=Math.max(640,n*80),H=260,pl=42,pr=10,pt=28,pb=36,iw=Wd-pl-pr,ih=H-pt-pb,slot=iw/n,bw=Math.min(44,slot*.55);
+  const vals=W.map(w=>w.tot.ap),mx=Math.max(...vals),mn=Math.min(...vals),top=Math.max(10,Math.ceil(mx/10)*10),y=v=>pt+ih-(v/top)*ih;let g="";
+  for(let v=0;v<=top;v+=10)g+=`<line class="grid" x1="${pl}" x2="${Wd-pr}" y1="${y(v)}" y2="${y(v)}"/><text x="${pl-8}" y="${y(v)+4}" text-anchor="end">${v}%</text>`;
+  W.forEach((w,i)=>{const v=w.tot.ap,cx=Wd-pr-slot*(i+.5),bx=cx-bw/2,by=y(v),h=pt+ih-by,r=Math.min(4,h);
+    g+=`<g><title>الأسبوع ${esc(w.week)}: ${f2(v)}%</title><path class="bar${v===mx?" hi":""}" d="M${bx},${pt+ih} V${by+r} Q${bx},${by} ${bx+r},${by} H${bx+bw-r} Q${bx+bw},${by} ${bx+bw},${by+r} V${pt+ih} Z"/>${(v===mx||v===mn||i===n-1)?`<text class="val" x="${cx}" y="${by-8}" text-anchor="middle">${f2(v)}%</text>`:""}<text x="${cx}" y="${H-12}" text-anchor="middle">${esc(w.week)}</text></g>`});
+  return `<div class="chart"><svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="نسبة الغياب الأسبوعية">${g}</svg></div>`}
+
+const TABS={
+ excuses:[
+  ["السجل",()=>{const t="absences";if(!ready(t))return tools("excuses")+status(t);const all=DB[t].rows;
+    const rows=(UI.filter==="all"?all:all.filter(r=>r.kind===UI.filter)).filter(qMatch);const cnt=k=>k==="all"?all.length:all.filter(r=>r.kind===k).length;
+    return tools("excuses")+chips([["all","الكل",cnt("all")],...Object.keys(KINDS).map(k=>[k,KINDS[k],cnt(k)])])+(rows.length?table(byName(rows),[["اسم الطالبة",r=>esc(r.name),"nm"],["الفصل",r=>esc(r.cls),"c"],["التاريخ",r=>esc(r.date),"c"],["الأيام",r=>esc(r.days),"c"],["النوع",r=>tagK(r.kind,KINDS[r.kind]||"")],["ملاحظة",r=>esc(r.note)]],canWrite)+`<p class="note">الأسماء مرتبة أبجديًا · ${rows.length} سجل</p>`
+     :`<div class="empty">${all.length?"لا توجد نتائج مطابقة.":canWrite?"السجل فاضي. اضغطي «＋ تسجيل غياب» لإضافة أول غياب.":"لم يُسجَّل أي غياب بعد."}</div>`)}],
+  ["الملخص الشهري",()=>{const t="absences";if(!ready(t))return status(t);const by={};
+    DB[t].rows.forEach(r=>{const d=parseD(r.date);if(!d)return;const k=d.y*100+d.m;by[k]=by[k]||{list:{},n:0};by[k].n++;const s=by[k].list[r.name+"|"+r.cls]=by[k].list[r.name+"|"+r.cls]||{name:r.name,cls:r.cls,days:0,ex:0};s.days+=+r.days||0;if(r.kind!=="none")s.ex+=+r.days||0});
+    const keys=Object.keys(by).sort((a,b)=>b-a);if(!keys.length)return `<div class="empty">يظهر الملخص بعد تسجيل أول غياب.</div>`;
+    return keys.map(k=>{const L=byName(Object.values(by[k].list).filter(s=>s.days>=3));return paperBlock(`شهر ${HM[k%100-1]} ${Math.floor(k/100)}هـ`,`${by[k].n} غياب مسجل`,null,
+      L.length?table(L,[["اسم الطالبة",r=>esc(r.name),"nm"],["الفصل",r=>esc(r.cls),"c"],["مجموع الأيام",r=>`<b class="flag">${r.days}</b>`,"c"],["منها بعذر",r=>r.ex,"c"]],false):`<p style="padding:14px 18px;color:var(--muted)">لا توجد طالبة تجاوز غيابها 3 أيام في هذا الشهر.</p>`,"الطالبات اللاتي تجاوز غيابهن 3 أيام")}).join("")}],
+  ["الأوراق الأصلية",()=>`<div class="certs"><figure class="cert"><button class="ev" data-full="img/cover_kashf1448.jpg"><img src="img/cover_kashf1448.jpg" alt="غلاف كشف حضور وغياب الفصل الأول 1448" loading="lazy"></button><figcaption><b>كشف حضور وغياب طالبات المدرسة</b> · الفصل الدراسي الأول 1448هـ · وكيلة شؤون الطالبات: فاطمة سعيد القرني · مديرة المدرسة: مستورة عايض العتيبي</figcaption></figure>
+   <figure class="cert"><button class="ev" data-full="img/cover_kashf1447.jpg"><img src="img/cover_kashf1447.jpg" alt="غلاف كشف حضور وغياب الفصل الثاني 1447" loading="lazy"></button><figcaption><b>كشف حضور وغياب طالبات المتوسطة الخامسة</b> · الفصل الدراسي الثاني 1447هـ</figcaption></figure></div><p class="note">صفحات الكشف الداخلية تُضاف هنا لاحقًا.</p>`],
+ ],
+ notices:[
+  ["السجل",()=>{const t="notices";if(!ready(t))return tools("notices")+status(t);const all=DB[t].rows;
+    const rows=(UI.filter==="all"?all:all.filter(r=>r.stage===UI.filter)).filter(qMatch);const cnt=k=>k==="all"?all.length:all.filter(r=>r.stage===k).length;
+    return tools("notices")+chips([["all","الكل",cnt("all")],...Object.keys(STAGES).map(k=>[k,STAGES[k],cnt(k)])])+(rows.length?table(byName(rows),[["اسم الطالبة",r=>esc(r.name),"nm"],["الفصل",r=>esc(r.cls),"c"],["التاريخ",r=>esc(r.date),"c"],["أيام الغياب",r=>esc(r.days),"c"],["الإشعار",r=>tagK(r.stage,STAGES[r.stage]||"")],["الوسيلة",r=>esc(CHANNELS[r.channel])],["رد ولي الأمر",r=>esc(r.response)]],canWrite)+`<p class="note">الأسماء مرتبة أبجديًا · ${rows.length} إشعار</p>`
+     :`<div class="empty">${all.length?"لا توجد نتائج مطابقة.":canWrite?"لا توجد إشعارات بعد. اضغطي «＋ تسجيل إشعار».":"لم يُسجَّل أي إشعار بعد."}</div>`)}],
+  ["الملخص",()=>{const t="notices";if(!ready(t))return status(t);const all=DB[t].rows;if(!all.length)return `<div class="empty">يظهر الملخص بعد تسجيل أول إشعار.</div>`;
+    const per={};all.forEach(r=>{const k=r.name+"|"+r.cls;const p=per[k]=per[k]||{name:r.name,cls:r.cls,n:0,maxd:0,last:null};p.n++;p.maxd=Math.max(p.maxd,+r.days||0);if(!p.last||dNum(r.date)>dNum(p.last.date))p.last=r});
+    const rep=byName(Object.values(per).filter(x=>x.n>=2));
+    return `<div class="minis">${Object.keys(STAGES).map(k=>`<div class="mini"><b>${all.filter(r=>r.stage===k).length}</b><span>${STAGES[k]}</span></div>`).join("")}</div>`+
+     paperBlock("طالبات لهن أكثر من إشعار",`${rep.length} طالبة`,null,rep.length?table(rep,[["اسم الطالبة",r=>esc(r.name),"nm"],["الفصل",r=>esc(r.cls),"c"],["عدد الإشعارات",r=>`<b class="flag">${r.n}</b>`,"c"],["أعلى أيام غياب",r=>r.maxd,"c"],["آخر إجراء",r=>tagK(r.last.stage,STAGES[r.last.stage])+` <small style="color:var(--muted)">${esc(r.last.date)}</small>`]],false):`<p style="padding:14px 18px;color:var(--muted)">لا توجد طالبة لها أكثر من إشعار.</p>`,"")}],
+  ["الأوراق الأصلية",()=>`<div class="certs"><figure class="cert"><button class="ev" data-full="img/cover_notices.jpg"><img src="img/cover_notices.jpg" alt="غلاف إشعارات غياب الطالبات" loading="lazy"></button><figcaption><b>إشعارات غياب الطالبات</b> · الغلاف · فخر وطن · انتظام وعطاء</figcaption></figure><figure class="cert"><button class="ev" data-full="img/cover_notices2.jpg"><img src="img/cover_notices2.jpg" alt="غلاف ملف إشعارات الغياب ثاني متوسط" loading="lazy"></button><figcaption><b>ملف إشعارات الغياب</b> · ثاني متوسط · الفصول 2/7، 2/8، 2/9، 2/10</figcaption></figure></div><p class="note">صفحات الإشعارات الورقية تُضاف هنا لاحقًا.</p>`],
+ ],
+ frequent:[
+  ["السجل",()=>{const t="frequent";if(!ready(t))return tools("frequent")+status(t);const all=DB[t].rows.filter(qMatch);
+    const by={};all.forEach(r=>{const k=(+r.year)*100+(+r.month);(by[k]=by[k]||[]).push(r)});const keys=Object.keys(by).sort((a,b)=>b-a);
+    return tools("frequent")+(keys.length?keys.map(k=>{const L=by[k];return paperBlock(`حصر شهر ${HM[k%100-1]} ${Math.floor(k/100)}هـ`,`${L.length} طالبة · حُوّلت ${L.filter(r=>r.referred).length} للمرشدة`,null,
+      table(byName(L),[["اسم الطالبة",r=>esc(r.name),"nm"],["الفصل",r=>esc(r.cls),"c"],["أيام الغياب",r=>`<b class="flag">${esc(r.days)}</b>`,"c"],["منها بعذر",r=>esc(r.excused||0),"c"],["التحويل",r=>r.referred?tagK("med","حُوّلت للمرشدة"):tagK("none","لم تُحوّل")],["الإجراء",r=>esc(r.note)]],canWrite),"")}).join("")
+     :`<div class="empty">${DB[t].rows.length?"لا توجد نتائج مطابقة.":canWrite?"لا توجد تحويلات مسجلة بعد. اضغطي «＋ إضافة طالبة للحصر»، أو شوفي تبويب «مقترحات».":"لا توجد تحويلات مسجلة بعد. التحويلات الورقية في تبويب «الأوراق الأصلية»."}</div>`)}],
+  ["مقترحات",()=>{const a="absences";if(!ready(a))return status(a);const done=new Set(DB.frequent.rows.map(r=>`${r.name}|${r.year}|${r.month}`));const by={};
+    DB[a].rows.forEach(r=>{const d=parseD(r.date);if(!d)return;const k=d.y*100+d.m;by[k]=by[k]||{};const s=by[k][r.name+"|"+r.cls]=by[k][r.name+"|"+r.cls]||{name:r.name,cls:r.cls,days:0,ex:0,y:d.y,m:d.m};s.days+=+r.days||0;if(r.kind!=="none")s.ex+=+r.days||0});
+    let h="";Object.keys(by).sort((x,y)=>y-x).forEach(k=>{const L=byName(Object.values(by[k]).filter(s=>s.days>=3));if(!L.length)return;
+      h+=paperBlock(`شهر ${HM[k%100-1]} ${Math.floor(k/100)}هـ`,"من سجل الأعذار · 3 أيام فأكثر",null,table(L,[["اسم الطالبة",r=>esc(r.name),"nm"],["الفصل",r=>esc(r.cls),"c"],["مجموع الأيام",r=>`<b class="flag">${r.days}</b>`,"c"],["منها بعذر",r=>r.ex,"c"],["",r=>done.has(`${r.name}|${r.y}|${r.m}`)?tagK("wr","مضافة للحصر"):(canWrite?`<div class="ra"><button data-act="adopt" data-n="${esc(r.name)}" data-c="${esc(r.cls)}" data-d="${r.days}" data-e="${r.ex}" data-m="${r.m}" data-y="${r.y}">إضافة للحصر</button></div>`:"")]],false),"")});
+    return `<p class="note" style="margin:0 0 12px;font-size:16px">طالبات تجاوز غيابهن 3 أيام في الشهر حسب سجل أعذار الطالبات${canWrite?"، وبضغطة تنضاف للحصر":""}.</p>`+(h||`<div class="empty">لا توجد طالبة تجاوز غيابها 3 أيام في أي شهر حسب سجل الأعذار.</div>`)}],
+  ["الأوراق الأصلية",()=>{const n=new Set(XF.flatMap(f=>f.rows.map(r=>r[0].replace(U,"")))).size;
+    return `<div class="minis"><div class="mini"><b>${XF.length}</b><span>بيانات تحويل 1448هـ</span></div><div class="mini"><b>${n}</b><span>طالبة مختلفة</span></div><div class="mini"><b>${XF.reduce((s,f)=>s+f.rows.length,0)}</b><span>حالة تحويل</span></div><div class="mini"><b>${FORMS.length}</b><span>استمارات 1447هـ</span></div></div>`+
+     `<h2 class="sec-t">بيان بأسماء الطالبات كثيرات الغياب · الفصل الأول 1448هـ</h2><div class="cols2">`+XF.map(f=>paperBlock(esc(f.t),`${esc(f.cls)} · ${f.rows.length} طالبة`,f.img,
+      `<div class="tw"><table class="t"><thead><tr><th>م</th><th>اسم الطالبة</th><th>الفصل</th><th>أيام بعذر</th><th>الإجراء</th></tr></thead><tbody>${sortRows(f.rows).map((r,i)=>`<tr><td class="num">${i+1}</td><td class="nm">${nm(r[0])}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td><td>${esc(r[3]||"")}</td></tr>`).join("")}</tbody></table></div>`,
+      "وكيلة الشؤون الطلابية: فاطمة سعيد القرني")).join("")+`</div>`+
+     `<h2 class="sec-t" style="margin-top:26px">استمارات حصر الطالبات كثيرات الغياب · 1447هـ</h2><div class="cols2">`+FORMS.map(f=>paperBlock("حصر الطالبات كثيرات الغياب",esc(f.t),f.img,
+      `<div class="tw"><table class="t"><thead><tr><th>م</th><th>اسم الطالبة</th><th>الفصل</th><th>أيام الغياب</th></tr></thead><tbody>${sortRows(f.rows).map((r,i)=>`<tr><td class="num">${i+1}</td><td class="nm">${nm(r[0])}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join("")}</tbody></table></div>`,esc(f.foot))).join("")+`</div>`+
+     `<p class="note">الأسماء مرتبة أبجديًا. الأسماء اللي تحتها خط منقّط من خط اليد وتحتاج تأكيد.</p>`}],
+ ],
+ stats:[
+  ["الرسم البياني",()=>{const W=allWeeks();const mx=W.reduce((a,b)=>b.tot.ap>a.tot.ap?b:a,W[0]),mn=W.reduce((a,b)=>b.tot.ap<a.tot.ap?b:a,W[0]),last=W[W.length-1];
+    return tools("stats",false)+`<div class="minis"><div class="mini"><b>${W.length}</b><span>أسابيع مسجلة</span></div><div class="mini"><b>${f2(last.tot.ap)}%</b><span>غياب آخر أسبوع (${esc(last.week)})</span></div><div class="mini"><b>${f2(mn.tot.ap)}%</b><span>أقل غياب · ${esc(mn.week)}</span></div><div class="mini"><b>${f2(mx.tot.ap)}%</b><span>أعلى غياب · ${esc(mx.week)}</span></div></div>`+weekChart(W)+(ready("weekly_stats")?"":status("weekly_stats"))}],
+  ["الأسابيع",()=>{const W=allWeeks();return tools("stats",false)+`<div class="weeks">${W.map(w=>`<details class="wk"><summary><b>الأسبوع ${esc(w.week)}</b><span>${esc(w.from_d)} – ${esc(w.to_d)} · الغياب ${f2(w.tot.ap)}%</span></summary>
+    <div class="tw"><table class="t"><thead><tr><th>الصف</th><th>العدد الكلي</th><th>الحضور</th><th>الغياب</th><th>نسبة الغياب</th><th>نسبة الحضور</th></tr></thead><tbody>${w.g.map((x,j)=>`<tr><td>${GR[j]}</td><td class="c">${x.t}</td><td class="c">${x.p}</td><td class="c">${x.a}</td><td class="c">${f2(x.ap)}%</td><td class="c">${f2(100-x.ap)}%</td></tr>`).join("")}<tr class="tot"><td>الإجمالي</td><td class="c">${w.tot.t}</td><td class="c">${w.tot.p}</td><td class="c">${w.tot.a}</td><td class="c">${f2(w.tot.ap)}%</td><td class="c">${f2(100-w.tot.ap)}%</td></tr></tbody></table></div>
+    <div class="block-f"><span>${w.id?"مضافة من الموقع"+(w.note?" · "+esc(w.note):""):"من الملف الورقي"}</span>${w.img?`<button class="orig" data-full="img/stat_${w.img}.jpg">عرض الأصل</button>`:(canWrite&&w.id?rowActs(w):"")}</div></details>`).join("")}</div>`}],
+  ["ملخص الصفوف",()=>{const W=allWeeks();const rows=GR.map((g,j)=>{const P=W.reduce((s,w)=>s+w.g[j].p,0),A=W.reduce((s,w)=>s+w.g[j].a,0);const worst=W.reduce((a,b)=>b.g[j].ap>a.g[j].ap?b:a,W[0]);return {g,j,P,A,ap:pct(A,P),worst}});
+    return table(rows,[["الصف",r=>r.g],["مجموع الحضور",r=>r.P.toLocaleString("en-US"),"c"],["مجموع الغياب",r=>r.A.toLocaleString("en-US"),"c"],["نسبة الغياب",r=>`<b class="flag">${f2(r.ap)}%</b>`,"c"],["أعلى أسبوع غياب",r=>`${esc(r.worst.week)} (${f2(r.worst.g[r.j].ap)}%)`]],false)+`<p class="note">مجموع ${W.length} أسابيع · النسبة = الغياب ÷ (الحضور + الغياب). أرقام الأسابيع الورقية منقولة كما هي.</p>`}],
+ ],
+};
+
+// ===== portfolio pages =====
+const PORT={
+ about:{title:"عني",icon:"user",ib:"var(--rose-soft)",ifc:"var(--rose)",sub:"المقدمة، الهدف، الرؤية والرسالة",render:()=>`<div class="about">
+  <div class="stack">
+   <div class="card idcard"><div style="font-size:14px;color:var(--sage);font-weight:700">ملف الأهداف والجدارات · 1447 – 1448هـ</div><div class="nm">تركية يحيى الزهراني</div><div class="rl">مساعد إداري ممارس ثاني</div>
+    <div class="facts"><div>المدرسة<b>المتوسطة الخامسة</b></div><div>الإدارة<b>تعليم محافظة جدة</b></div><div>مديرة المدرسة<b>مستورة عائض العتيبي</b></div></div></div>
+   <div class="card"><h2>المقدمة</h2><div class="prose"><p>بسم الله أبتدي، وبكتابه أقتدي، وبسنة رسوله ﷺ أهتدي..</p><p>الحمد لله ذي الفضل والمنّ والعطاء، الذي خلق وبرأ، وأعطى فأبدع، وأبهر وأكرم وأجزل..</p><p>أما بعد.. تحية طيبة مشرقة لك يا من تقرأ ملف الإنجاز..</p><p>هذا هو ملف الإنجاز الذي خصصته ليكون حقيبة مرجعية لأعمالي، حيث دوّنت وجمعت ونسّقت كل إنجازاتي.</p></div></div>
+   <div class="card"><h2>الهدف من ملف الإنجاز</h2><div class="prose"><p>مع رؤية 2030 أصبحت التطورات المستحدثة في التكنولوجيا وتوظيفها مطلبًا مهمًا في إعداد الموظف وتميّزه وتطويره في مجالات الحاسب الآلي، لتطوير مجال التعليم، ولضرورة ملف الإنجاز.</p><p>من أكثر الأشياء التي تساعد على إتمام العمل وترتيبه: وضع الأولويات، ووضع الأهداف المناسبة التي يجب أن تحققها هذه الأعمال. ولهذا فإن ملف الإنجاز يُعد من أكثر الأشياء التي من الممكن أن تدير لك أعمالك، سواء الإدارية أو غير الإدارية.</p><p>وهو الملف الذي يحفظ لي حقي من بداية العمل، وإنجازاتي العملية.</p></div></div>
+  </div>
+  <div class="stack">
+   <div class="card verse"><div class="b">بسم الله الرحمن الرحيم</div><p class="v">﴿وَقُلِ اعْمَلُوا فَسَيَرَى اللَّهُ عَمَلَكُمْ وَرَسُولُهُ وَالْمُؤْمِنُونَ ۖ وَسَتُرَدُّونَ إِلَىٰ عَالِمِ الْغَيْبِ وَالشَّهَادَةِ فَيُنَبِّئُكُم بِمَا كُنتُمْ تَعْمَلُونَ﴾</p><p class="s">سورة التوبة · 105</p></div>
+   <div class="card"><h2>رؤيتي ورسالتي</h2><div class="vm"><div><h3>رؤيتي</h3><p>الريادة والتميز بتقديم خدمات إدارية عالية الجودة ومشاركة مجتمعية فعالة.</p></div><div><h3>رسالتي</h3><p>خدمات تحقق الجودة في الأداء لكافة الفئات، وتحويل المواهب والقدرات إلى إبداعات واقعية.</p></div></div></div>
+   <div class="card"><h2>رؤية وزارة التعليم ورسالتها</h2><div class="vm"><div><h3>رؤيتنا</h3><p>متعلم.. معتز بدينه.. منتمٍ لوطنه.. منتج للمعرفة.. منافس عالميًا.</p></div><div><h3>رسالتنا</h3><p>تقديم تعليم وتعلّم متميز للجميع بما يواكب التوجهات العالمية في ضوء السياسات التعليمية للمملكة، ومشاركة مجتمعية في بيئة تعليمية جاذبة وآمنة، ترتقي بالمهارات والقدرات، وتثري البحث العلمي، وتشجع على الابتكار والإبداع.</p></div></div>
+    <div class="values"><span>النزاهة</span><span>الإنجاز</span><span>التكامل</span><span>المبادرة</span><span>الإبداع</span><span>الشفافية</span><span>العمل المؤسسي</span></div></div>
+   <div class="card"><h2>في الختام</h2><div class="prose"><p>بالتفاني والإصرار.. تم تحقيق إنجازات ملموسة وملحوظة، ومع العمل الجماعي والتعاون بنيت قاعدة قوية للنجاح..</p><p>هذا الملف هو بداية لمرحلة جديدة من التحديات والفرص، نتطلع إلى استخدام هذا الإنجاز كمنصة للنمو المستقبلي وتحقيق المزيد من الإنجازات الرائعة.</p></div><p class="quote" style="margin-top:14px">قلوبنا تحمل قيمًا نغرسها لتبقى أثرًا</p><div class="sign">تركية يحيى الزهراني</div></div>
+  </div></div>`},
+ goals:{title:"أهداف الميثاق",icon:"target",ib:"var(--teal-soft)",ifc:"var(--teal)",sub:"4 أهداف و4 جدارات مع الشواهد",desc:"أهداف وجدارات ميثاق الأداء الوظيفي لعام 2026م كما وردت في نموذج التقييم، ومعها الشواهد في هذا الملف",render:()=>{
+  const G=[["إعداد سجل غياب الطالبات للعام الحالي 2026م","سجل","30%","1","excuses"],["إعداد ملف إشعارات غياب الطالبات للعام الحالي 2026م","ملف","30%","1","notices"],["إعداد 4 تقارير تحويل الطالبات كثيرات الغياب خلال العام الحالي 2026م","تقارير","20%","4","frequent","✓ 6 بيانات تحويل"],["إعداد 8 تقارير إحصائية لغياب الطالبات خلال العام الحالي 2026م","إحصائية","20%","8","stats","✓ 7 إحصائيات + حصر الخميس"]];
+  return `<h2 class="sec-t">أولًا: الأهداف</h2>`+table(G.map(g=>({g})),[["الهدف",r=>esc(r.g[0])],["معيار القياس",r=>r.g[1],"c"],["الوزن",r=>r.g[2],"c"],["المستهدف",r=>r.g[3],"c"],["الشاهد",r=>`<a href="#${r.g[4]}" style="color:var(--teal);font-weight:700">${REC[r.g[4]].title}</a>${r.g[5]?`<br><small style="color:var(--sage)">${r.g[5]}</small>`:""}`]],false)+
+   `<h2 class="sec-t" style="margin-top:26px">ثانيًا: الجدارات</h2>`+table(JAD.map(j=>({j})),[["الجدارة",r=>`<b>${r.j[0]}</b>`],["الوصف السلوكي",r=>r.j[1]],["الوزن",r=>r.j[2]+"%","c"],["المستوى المطلوب",r=>"4","c"],["التقارير",r=>`<a href="#reports" data-jad="${r.j[0]}" style="color:var(--teal);font-weight:700">${REPORTS.filter(x=>x.c===r.j[0]).length} تقارير</a>`,"c"]],false)}},
+ reports:{title:"التقارير والشواهد",icon:"camera",ib:"var(--sage-soft)",ifc:"var(--sage)",sub:`${REPORTS.length} تقريرًا بالصور`,desc:"تقارير المبادرات والأعمال مرتبة بالتاريخ، وكل تقرير مربوط بالجدارة الأقرب له. اضغطي على أي صورة لتكبيرها",render:()=>{
+  const cats=["الكل","المسؤولية","العمل الجماعي","المرونة للتغيير","المبادرة"];const rows=UI.rfilter==="الكل"?REPORTS:REPORTS.filter(r=>r.c===UI.rfilter);
+  return `<div class="chips">${cats.map(c=>`<button class="chip" data-act="rfilter" data-k="${c}" aria-pressed="${UI.rfilter===c}">${c}<span>${c==="الكل"?REPORTS.length:REPORTS.filter(r=>r.c===c).length}</span></button>`).join("")}</div><div class="reps">`+
+   rows.map(r=>`<article class="rep"><div class="rep-h"><h3>${esc(r.t)}<span class="jtag">${esc(r.c)}</span></h3><span class="d">${esc(r.d)}</span></div>
+    <dl class="rep-b"><dt>المنفذة</dt><dd>${esc(r.by)}</dd><dt>المكان</dt><dd>${esc(r.place)}</dd><dt>المستفيدات</dt><dd>${esc(r.who)} · ${esc(r.n)}</dd></dl>
+    <div class="rep-g"><h4>الأهداف</h4><ul>${r.g.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+    <div class="rep-e">${r.ev?`<button class="ev" data-full="img/${r.ev}.jpg" aria-label="تكبير شواهد ${esc(r.t)}"><img src="img/${r.ev}.jpg" alt="شواهد ${esc(r.t)}" loading="lazy"></button>`:`<div class="ev-none">الشواهد المصورة تُضاف لاحقًا</div>`}<button class="orig" data-full="img/${r.pg}.jpg" style="align-self:flex-start">عرض التقرير الأصلي</button></div></article>`).join("")+`</div>`}},
+ followup:{title:"المتابعة والإشراف",icon:"clip",ib:"var(--navy-soft)",ifc:"var(--navy)",sub:"استمارات الغياب وجداول الإشراف",desc:"استمارات حصر الطالبات كثيرات الغياب من قِبل المراقبة، وجداول الإشراف الأسبوعي",tabs:[
+  ["استمارات الغياب",()=>`<div class="cols2">`+FORMS.map(f=>paperBlock("استمارة حصر الطالبات كثيرات الغياب",esc(f.t),f.img,
+    `<div class="tw"><table class="t"><thead><tr><th>م</th><th>اسم الطالبة</th><th>الفصل</th><th>أيام الغياب</th></tr></thead><tbody>${sortRows(f.rows).map((r,i)=>`<tr><td class="num">${i+1}</td><td class="nm">${nm(r[0])}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join("")}</tbody></table></div>`+(f.note?`<p style="padding:12px 18px;font-size:15px;color:var(--muted);border-top:1px solid var(--line)">${esc(f.note)}</p>`:""),esc(f.foot))).join("")+`</div><p class="note">الأسماء مرتبة أبجديًا.</p>`],
+  ["جداول الإشراف",()=>`<div class="cols2">`+SCHEDS.map(sc=>{const mine=sc.d.flat().filter(x=>x===T).length;return paperBlock(esc(sc.t),esc(sc.sub),sc.img,
+    `<div class="tw"><table class="t sched"><thead><tr><th>الحصة</th>${DAYS.map(d=>`<th>${d}</th>`).join("")}</tr></thead><tbody>${PER.map((p,i)=>`<tr><td>${p}</td>${sc.d.map(day=>{const v=day[i];return `<td><span class="${v===T?"me":v===J?"all":""}">${v===T?"تركية":v===W?"وفاء":v===H?"هند":"الجميع"}</span></td>`}).join("")}</tr>`).join("")}</tbody></table></div>`,
+    `حصص إشراف تركية: <b style="color:var(--rose)">${mine}</b> في الأسبوع · إعداد وفاء المالكي`)}).join("")+`</div>`],
+ ]},
+ certs:{title:"الشهادات",icon:"medal",ib:"var(--gold-soft)",ifc:"var(--gold)",sub:"الشكر، الدورات، التطوع",render:()=>`
+  <h2 class="sec-t">شهادات الشكر</h2><div class="certs">
+   <figure class="cert"><button class="ev" data-full="img/cert_thanks.jpg"><img src="img/cert_thanks.jpg" alt="شهادة شكر وتقدير" loading="lazy"></button><figcaption><b>شكر وتقدير</b> من إدارة المتوسطة الخامسة على الجهود والتعاون في إنجاح العملية التعليمية للعام الدراسي 1447هـ · مديرة المدرسة مستورة عائض العتيبي</figcaption></figure>
+   <figure class="cert"><button class="ev" data-full="img/cert_class.jpg"><img src="img/cert_class.jpg" alt="شهادة تقدير صف ثاني 8" loading="lazy"></button><figcaption><b>تقدير لطالبات صف ثاني/8</b> الأقل غيابًا والأكثر التزامًا · موقّعة من تركية الزهراني بصفتها مسؤولة الغياب</figcaption></figure></div>
+  <h2 class="sec-t">الدورات التدريبية</h2><div class="certs">
+   <figure class="cert"><button class="ev" data-full="img/cert_ipa.jpg"><img src="img/cert_ipa.jpg" alt="شهادة معهد الإدارة العامة" loading="lazy"></button><figcaption><b>تطوير الإجراءات والنماذج الإدارية</b> · معهد الإدارة العامة · 3 أيام، من 30/4 إلى 2/5/1448هـ</figcaption></figure></div>
+  <h2 class="sec-t">شهادات التطوع</h2><div class="empty">تُضاف شهادات التطوع هنا قريبًا.</div>`},
+ assignment:{title:"التكليف الإداري",icon:"doc",ib:"var(--paper)",ifc:"var(--muted)",sub:"يُضاف قريبًا",soon:true,render:()=>`<div class="empty">تُضاف صفحة التكليف الإداري هنا قريبًا.</div>`},
+};
+
+// ===== render =====
+const app=document.getElementById("app");
+function home(){
+  const nf=new Set([...XF.flatMap(f=>f.rows.map(r=>r[0].replace(U,""))),...DB.frequent.rows.map(r=>r.name)]).size;
+  const W=allWeeks(),last=W[W.length-1];
+  const nums={excuses:[ready("absences")?DB.absences.rows.length:"–","غياب مسجل"],notices:[ready("notices")?DB.notices.rows.length:"–","إشعار مسجل"],frequent:[nf,"طالبة محوّلة"],stats:[f2(last.tot.ap)+"%",`غياب الأسبوع ${last.week}`]};
+  return `<div class="hello"><div><h1>${canWrite?"أهلًا تركية":"ملف إنجاز تركية يحيى الزهراني"}</h1><p>المتوسطة الخامسة · مساعد إداري · 1447 – 1448هـ</p></div>${canWrite?`<button class="add-big" data-act="chooser">＋ تسجيل جديد</button>`:""}</div>
+   <div class="gh">سجلات الغياب</div><div class="rgrid">${Object.keys(REC).map(k=>{const R=REC[k];return `<a class="rc" href="#${k}" style="--fc:${R.fc}"><h3>${R.short}</h3><div class="n">${nums[k][0]}</div><div class="l">${nums[k][1]}</div><div class="go">فتح ←</div></a>`}).join("")}</div>
+   <div class="gh">ملف الإنجاز</div><div class="pgrid">${Object.keys(PORT).map(k=>{const P=PORT[k];return `<a class="pc${P.soon?" soon":""}" href="#${k}"><span class="ic" style="--ib:${P.ib};--ifc:${P.ifc}">${ICON[P.icon]}</span><span><h3>${P.title}</h3><p>${P.sub}</p></span></a>`}).join("")}</div>`}
+function pageHead(title,desc,fc,extra){return `<a class="back" href="#">→ الرئيسية</a><div class="ph" style="--fc:${fc||"var(--ink)"}"><div><h1>${title}</h1>${desc?`<p>${desc}</p>`:""}</div>${extra||""}</div>`}
+function tabsBar(key,list){const cur=UI.tab[key]||0;return `<div class="tabs" role="tablist">${list.map((t,i)=>`<button class="tab" role="tab" aria-selected="${i===cur}" data-act="tab" data-k="${key}" data-i="${i}">${t[0]}</button>`).join("")}</div>`}
+let route="";
+function render(keep){
+  const y=scrollY;const fq=document.activeElement&&document.activeElement.id==="q";const sel=fq?document.activeElement.selectionStart:0;
+  let h;
+  if(REC[route]){const R=REC[route],L=TABS[route],cur=Math.min(UI.tab[route]||0,L.length-1);
+    h=`<div style="--fc:${R.fc};--fs:${R.fs}">${pageHead(R.title,R.desc,R.fc,R.cover?`<div class="ph-act"><button class="btn ghost" data-full="img/${R.cover}.jpg">الغلاف الورقي</button></div>`:"")}${tabsBar(route,L)}<div class="panel">${L[cur][1]()}</div></div>`;
+    document.title=R.title+" · تركية الزهراني"}
+  else if(PORT[route]){const P=PORT[route];
+    h=pageHead(P.title,P.desc,"var(--ink)")+(P.tabs?tabsBar(route,P.tabs)+`<div class="panel">${P.tabs[Math.min(UI.tab[route]||0,P.tabs.length-1)][1]()}</div>`:`<div style="margin-top:22px">${P.render()}</div>`);
+    document.title=P.title+" · تركية الزهراني"}
+  else{h=home();document.title="ملف إنجاز تركية الزهراني"}
+  app.innerHTML=h;
+  if(keep)window.scrollTo(0,y);
+  if(fq){const q=document.getElementById("q");if(q){q.focus();try{q.setSelectionRange(sel,sel)}catch(e){}}}
+}
+function go(){const r=decodeURIComponent(location.hash.slice(1));const known=REC[r]||PORT[r];route=known?r:"";UI.filter="all";UI.q="";UI.confirm=null;render(false);window.scrollTo(0,0)}
+window.addEventListener("hashchange",go);
+
+// ===== form dialog =====
+const dlg=document.getElementById("dlg"),dcard=document.getElementById("dlgCard");let F=null,editId=null,lastFocus=null;
+function fieldHTML(f,v){const id="ff_"+f.k,lab=`<label for="${id}">${f.l}${f.opt?' <span style="font-size:12px">(اختياري)</span>':""}</label>`,half=f.half?" half":"";
+  if(f.t==="radio")return `<fieldset class="${half}"><legend>${f.l}</legend><div class="radios">${Object.keys(f.opts).map(k=>`<label><input type="radio" name="${id}" value="${k}"${k===v?" checked":""}> ${f.opts[k]}</label>`).join("")}</div></fieldset>`;
+  if(f.t==="bool")return `<label class="chk${half}"><input type="checkbox" id="${id}"${v?" checked":""}> ${f.l}</label>`;
+  if(f.t==="month")return `<div class="${half}">${lab}<select id="${id}">${HM.map((m,i)=>`<option value="${i+1}"${+v===i+1?" selected":""}>${m}</option>`).join("")}</select></div>`;
+  if(f.t==="grid"){const g=v||{};return `<fieldset><legend>${f.l}</legend><div class="eg"><span></span><b>العدد الكلي</b><b>الحضور</b><b>الغياب</b>${[1,2,3].map(i=>`<span>${GR[i-1]}</span>${["total","present","absent"].map(c=>`<input type="number" min="0" max="20000" inputmode="numeric" id="ff_g${i}_${c}" value="${g["g"+i+"_"+c]??""}" aria-label="${GR[i-1]}">`).join("")}`).join("")}</div><p class="note" style="margin-top:4px">الحضور والغياب مجموع أيام الأسبوع. النسب تنحسب تلقائيًا.</p></fieldset>`}
+  const a=f.t==="name"?`list="nameList" autocomplete="off" placeholder="اكتبي الاسم الثلاثي"`:f.t==="cls"?`list="clsList" placeholder="مثال 1/8 = أول متوسط فصل 8" inputmode="numeric"`:f.t==="date"?`placeholder="يوم/شهر/سنة · مثال 15/5/1448" inputmode="numeric"`:f.t==="int"?`type="number" min="${f.min}" max="${f.max}" inputmode="numeric"`:`placeholder="${f.ph||""}"`;
+  return `<div class="${half.trim()}">${lab}<input id="${id}" ${a} value="${esc(v??"")}"></div>`}
+function openForm(key,row,preset){F=key;const R=REC[key];editId=row?row.id:null;const src=row||preset||{};lastFocus=document.activeElement;
+  dcard.style.setProperty("--fc",R.fc);dcard.style.setProperty("--fs",R.fs);
+  dcard.innerHTML=`<form id="dform" novalidate><h2 id="dlgT">${row?"تعديل":R.add}<small style="display:block;font-family:var(--f-body);font-size:15px;color:var(--muted);font-weight:500">${R.title}</small></h2><div class="ff">${R.fields.map(f=>fieldHTML(f,f.t==="grid"?src:(src[f.k]!=null?src[f.k]:(f.t==="date"&&!row?hijriToday():f.t==="month"&&!row?(HP?HP.m:1):f.def)))).join("")}</div>
+   <p class="err" id="derr" role="alert"></p><div class="dlg-act"><button type="submit" class="btn" id="dsave">حفظ</button><button type="button" class="btn ghost" data-act="close">إلغاء</button></div></form>`;
+  dlg.hidden=false;const first=dcard.querySelector("input:not([type=radio]):not([type=checkbox]),select");first&&first.focus()}
+function chooser(){lastFocus=document.activeElement;dcard.style.setProperty("--fc","var(--rose)");
+  dcard.innerHTML=`<h2 id="dlgT">وش تبين تسجلين؟</h2><div class="choose">${Object.keys(REC).map(k=>`<button data-act="pick" data-k="${k}" style="--c:${REC[k].fc}"><b>${REC[k].short}</b><span>${REC[k].choose}</span></button>`).join("")}</div><div class="dlg-act"><button class="btn ghost" data-act="close">إلغاء</button></div>`;
+  dlg.hidden=false;dcard.querySelector("button").focus()}
+function closeDlg(){dlg.hidden=true;editId=null;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+function readForm(R){const o={},err=m=>{throw {user:m}};const strip=l=>l.replace(/ \(.*\)/,"");
+  for(const f of R.fields){const id="ff_"+f.k;
+    if(f.t==="radio"){o[f.k]=(dcard.querySelector(`input[name="${id}"]:checked`)||{}).value||f.def;continue}
+    if(f.t==="bool"){o[f.k]=document.getElementById(id).checked;continue}
+    if(f.t==="grid"){for(let i=1;i<=3;i++)for(const c of ["total","present","absent"]){const v=parseInt(toLatin(document.getElementById(`ff_g${i}_${c}`).value),10);if(!(v>=0))err(`اكتبي ${c==="total"?"العدد الكلي":c==="present"?"الحضور":"الغياب"} لـ${GR[i-1]}.`);o[`g${i}_${c}`]=v}continue}
+    let v=toLatin(document.getElementById(id).value).trim().replace(/\s+/g," ");
+    if(f.t==="month"){o[f.k]=parseInt(v,10);continue}
+    if(!v&&f.opt){o[f.k]="";continue}
+    if(!v)err(`اكتبي ${strip(f.l)}.`);
+    if(f.t==="name"&&v.split(" ").length<2)err("اكتبي اسم الطالبة كاملًا (اسمين على الأقل).");
+    if(f.t==="cls")v=v.replace(/\s/g,"");
+    if(f.t==="date"){v=v.replace(/\s/g,"");if(!parseD(v))err(`اكتبي ${strip(f.l)} بهذا الشكل: يوم/شهر/سنة، مثل 15/5/1448.`)}
+    if(f.t==="int"){const n=parseInt(v,10);if(!(n>=f.min&&n<=f.max))err(`${strip(f.l)}: رقم بين ${f.min} و${f.max}.`);v=n}
+    o[f.k]=v}
+  return o}
+dlg.addEventListener("submit",async e=>{e.preventDefault();const R=REC[F],m=document.getElementById("derr"),b=document.getElementById("dsave");m.textContent="";
+  let body;try{body=readForm(R)}catch(x){m.textContent=x.user||"تأكدي من البيانات.";return}
+  b.disabled=true;b.textContent="جارٍ الحفظ…";
+  try{const q=editId?Site.sb.from(R.table).update(body).eq("id",editId).select():Site.sb.from(R.table).insert(body).select();const {data,error}=await q;if(error)throw error;if(!data||!data.length)throw {code:"denied"};
+    await load(R.table);const k=F;closeDlg();if(route!==k)location.hash=k;else render(true)}
+  catch(x){m.textContent=(x&&(x.code==="denied"||x.code==="42501"))?"ما عندك صلاحية التعديل. سجّلي الدخول بحساب المالكة.":"ما انحفظ. تأكدي من الاتصال وحاولي مرة ثانية."}
+  finally{b.disabled=false;b.textContent="حفظ"}});
+
+// ===== events =====
+document.addEventListener("input",e=>{if(e.target.id==="q"){UI.q=e.target.value;render(true)}});
+document.addEventListener("click",async e=>{
+  const full=e.target.closest("[data-full]");if(full){e.preventDefault();openLb(full.dataset.full,full);return}
+  const jad=e.target.closest("[data-jad]");if(jad){e.preventDefault();UI.rfilter=jad.dataset.jad;location.hash="reports";return}
+  const a=e.target.closest("[data-act]");if(!a)return;const act=a.dataset.act;
+  if(act==="close"){closeDlg();return}
+  if(act==="chooser"){chooser();return}
+  if(act==="pick"){closeDlg();if(route!==a.dataset.k)location.hash=a.dataset.k;openForm(a.dataset.k);return}
+  if(act==="tab"){UI.tab[a.dataset.k]=+a.dataset.i;UI.filter="all";UI.confirm=null;render(true);return}
+  if(act==="filter"){UI.filter=a.dataset.k;render(true);return}
+  if(act==="rfilter"){UI.rfilter=a.dataset.k;render(true);return}
+  if(act==="add"){openForm(a.dataset.rec);return}
+  const R=REC[route];if(!R)return;const rows=R.table==="weekly_stats"?DB.weekly_stats.rows:DB[R.table].rows,id=a.dataset.id;
+  if(act==="edit")openForm(route,rows.find(r=>r.id===id));
+  else if(act==="del"){UI.confirm=id;render(true)}
+  else if(act==="delno"){UI.confirm=null;render(true)}
+  else if(act==="delyes"){UI.confirm=null;try{const {error}=await Site.sb.from(R.table).delete().eq("id",id);if(error)throw error;await load(R.table)}catch(x){UI.err="ما انحذف. حاولي مرة ثانية.";render(true);setTimeout(()=>{UI.err=null;render(true)},4000)}}
+  else if(act==="adopt")openForm("frequent",null,{name:a.dataset.n,cls:a.dataset.c,days:+a.dataset.d,excused:+a.dataset.e,month:+a.dataset.m,year:+a.dataset.y,referred:true});
+});
+dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
+const lb=document.getElementById("lb"),lbImg=document.getElementById("lbImg");let lbFrom=null;
+function openLb(src,from){lbFrom=from;lbImg.src=src;lb.hidden=false;document.getElementById("lbX").focus()}
+function closeLb(){lb.hidden=true;lbImg.removeAttribute("src");lbFrom&&lbFrom.focus()}
+document.getElementById("lbX").onclick=closeLb;lb.addEventListener("click",e=>{if(e.target===lb)closeLb()});
+document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!lb.hidden)closeLb();else if(!dlg.hidden)closeDlg()});
+
+// ===== names list =====
+function names(){const s=new Set();["absences","notices","frequent"].forEach(t=>DB[t].rows.forEach(r=>s.add(r.name)));[...FORMS,...XF].forEach(f=>f.rows.forEach(r=>s.add(r[0].replace(U,""))));
+  document.getElementById("nameList").innerHTML=[...s].sort((a,b)=>arKey(a).localeCompare(arKey(b),"ar")).map(n=>`<option value="${esc(n)}">`).join("")}
+document.getElementById("clsList").innerHTML=[1,2,3].flatMap(g=>Array.from({length:10},(_,i)=>`<option value="${g}/${i+1}">`)).join("");
+
+// ===== load =====
+async function load(t){const {data,error}=await Site.sb.from(t).select("*").limit(5000);
+  if(error)DB[t].state=(error.code==="42P01"||/does not exist|schema cache/i.test(error.message||""))?"missing":(DB[t].rows.length?"ready":"slow");else{DB[t].rows=data;DB[t].state="ready"}
+  names();if(dlg.hidden)render(true)}
+if(!window.Site||!Site.ready){Object.keys(DB).forEach(t=>DB[t].state="off")}
+else{const tm=setTimeout(()=>{Object.keys(DB).forEach(t=>{if(DB[t].state==="loading")DB[t].state="slow"});render(true)},10000);
+  Promise.all(Object.keys(DB).map(load)).then(()=>clearTimeout(tm));
+  Object.keys(DB).forEach(t=>{try{Site.sb.channel("live-"+t).on("postgres_changes",{event:"*",schema:"public",table:t},()=>load(t)).subscribe()}catch(e){}});
+  Site.onAuth(o=>{canWrite=o;if(!o&&!dlg.hidden)closeDlg();render(true)})}
+
+// ===== theme =====
 const themeBtn=document.getElementById("themeBtn");
-function isDark(){const t=document.documentElement.getAttribute("data-theme");return t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches}
-function syncTheme(){themeBtn.textContent=isDark()?"فاتح":"داكن"}
+const isDark=()=>{const t=document.documentElement.getAttribute("data-theme");return t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches};
+const syncTheme=()=>themeBtn.textContent=isDark()?"فاتح":"داكن";
 themeBtn.onclick=()=>{const n=isDark()?"light":"dark";document.documentElement.setAttribute("data-theme",n);try{localStorage.setItem("tz-theme",n)}catch(e){}syncTheme()};
 syncTheme();
-if(window.Site&&Site.ready){
-  Site.sb.from("absences").select("id",{count:"exact",head:true}).then(({count,error})=>{
-    if(error||count==null)return;const el=document.getElementById("liveCount");
-    el.querySelector("span").textContent=count?`${count} غياب مسجل حتى الآن`:"الملفات جاهزة للتسجيل";el.hidden=false});
-}
+names();go();
+
 </script>
 </body>
 </html>
