@@ -201,11 +201,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
   <section class="regband">
     <div class="wrap">
       <div>
-        <h2>سجل أعذار الطالبات</h2>
-        <p>سجل يُحدَّث أولًا بأول: الغياب، والأعذار الطبية والخطية، والتقارير الشهرية للطالبات كثيرات الغياب. الأسماء مرتبة أبجديًا.</p>
+        <h2>ملفات المتابعة</h2>
+        <p>أربعة ملفات تُحدَّث أولًا بأول: سجل أعذار الطالبات، وإشعارات غياب الطالبات، وتحويلات كثيرات الغياب، وإحصائية الحضور والغياب. الأسماء مرتبة أبجديًا.</p>
         <span class="live" id="liveCount" hidden><i></i><span></span></span>
       </div>
-      <a class="btn main" href="file.html#excuses">فتح السجل</a>
+      <a class="btn main" href="file.html#excuses">فتح الملفات</a>
     </div>
   </section>
 
@@ -233,7 +233,7 @@ syncTheme();
 if(window.Site&&Site.ready){
   Site.sb.from("absences").select("id",{count:"exact",head:true}).then(({count,error})=>{
     if(error||count==null)return;const el=document.getElementById("liveCount");
-    el.querySelector("span").textContent=count?`${count} سجل غياب حتى الآن`:"السجل جاهز للتسجيل";el.hidden=false});
+    el.querySelector("span").textContent=count?`${count} غياب مسجل حتى الآن`:"الملفات جاهزة للتسجيل";el.hidden=false});
 }
 </script>
 </body>
