@@ -246,6 +246,9 @@ table.t{width:100%;border-collapse:collapse;font-size:17px;min-width:560px}
 .g-meta b{color:var(--ink);font-weight:700}
 .g-meta a{color:var(--teal);font-weight:700}
 .g-ok{color:var(--sage);font-weight:700}
+.pthumb{display:block;width:100%;border:0;border-top:1px solid var(--line);background:var(--paper);padding:12px;cursor:zoom-in;position:relative}
+.pthumb img{display:block;width:100%;max-height:340px;object-fit:cover;object-position:top;border-radius:10px;border:1px solid var(--line);background:#fff}
+.pthumb span{position:absolute;bottom:22px;inset-inline-start:22px;background:var(--sheet);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px}
 /* reports */
 .reps{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:18px;align-items:start}
 .rep{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
@@ -529,7 +532,7 @@ function tools(key,search=true){const R=REC[key];
 const qMatch=r=>{const q=arKey(UI.q.trim());return !q||arKey(r.name).includes(q)||String(r.cls||"").includes(q)};
 function chips(list){return `<div class="chips">${list.map(([k,l,n])=>`<button class="chip" data-act="filter" data-k="${k}" aria-pressed="${UI.filter===k}">${l}<span>${n}</span></button>`).join("")}</div>`}
 const tagK=(cls,t)=>`<span class="tg ${cls}">${esc(t)}</span>`;
-const paperBlock=(title,sub,img,inner,foot)=>`<div class="block"><div class="block-h"><h3>${title}</h3><span>${sub||""}</span></div>${inner}<div class="block-f"><span>${foot||""}</span>${img?`<button class="orig" data-full="img/${img}.jpg">عرض الأصل</button>`:""}</div></div>`;
+const paperBlock=(title,sub,img,inner,foot)=>`<div class="block"><div class="block-h"><h3>${title}</h3><span>${sub||""}</span></div>${inner}${img?`<button class="pthumb" data-full="img/${img}.jpg" aria-label="تكبير الورقة الأصلية"><img src="img/${img}.jpg" alt="الورقة الأصلية: ${title}" loading="lazy"><span>الورقة الأصلية · اضغطي للتكبير</span></button>`:""}<div class="block-f"><span>${foot||""}</span></div></div>`;
 
 function weekChart(W){if(!W.length)return "";
   const n=W.length,Wd=Math.max(640,n*80),H=260,pl=42,pr=10,pt=28,pb=36,iw=Wd-pl-pr,ih=H-pt-pb,slot=iw/n,bw=Math.min(44,slot*.55);
